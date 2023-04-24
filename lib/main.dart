@@ -2,8 +2,12 @@ import 'package:aby_eatery/Screens/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'Screens/auth/forgot_password.dart';
 import 'Screens/auth/login.dart';
+import 'Screens/auth/signup.dart';
+import 'Screens/discover/discover.dart';
 import 'Screens/welcome.dart';
+import 'components/bottom_navy.dart';
 import 'components/splash_screen.dart';
 import 'components/theme.dart';
 
@@ -24,7 +28,11 @@ class MyApp extends StatelessWidget {
       routes: <String, WidgetBuilder>{
         'home': (BuildContext context) => const HomeScreen(),
         'welcome': (BuildContext context) => const WelcomeScreen(),
-        'login': (BuildContext context) => const LoginScreen(),
+        'login': (BuildContext context) => LoginScreen(),
+        'signup': (BuildContext context) => SignupScreen(),
+        'bottomNavy': (BuildContext context) => const BottomNavy(),
+        'discover': (BuildContext context) => const DiscoverScreen(),
+        'forgotPassword': (BuildContext context) => ForgotPasswordScreen(),
       },
     );
   }

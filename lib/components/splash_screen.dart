@@ -1,7 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../services/auth_services.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -15,22 +18,23 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
-    // _checkIfLoggedIn();
+    _checkIfLoggedIn();
     startTime();
     super.initState();
   }
 
-  // final AuthServices authServices = AuthServices();
-  // void _checkIfLoggedIn() async {
-  //   // check if token is there
-  //   SharedPreferences localStorage = await SharedPreferences.getInstance();
-  //   var token = localStorage.getString('token');
-  //   if (token != null) {
-  //     setState(() {
-  //       _isLoggedIn = true;
-  //     });
-  //   }
-  // }
+  final GetStorage box = GetStorage();
+  final AuthServices authServices = AuthServices();
+  void _checkIfLoggedIn() async {
+    // check if token is there
+
+    var token = box.read('sessionId');
+    if (token != null) {
+      setState(() {
+        _isLoggedIn = true;
+      });
+    }
+  }
 
   // / Setting duration in splash screen
   startTime() async {
@@ -39,8 +43,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
   /// To navigate layout change
   void navigatorPage() {
-    Navigator.of(context).pushReplacementNamed('welcome');
-    // _isLoggedIn ? "bottomnavy" : "onboarding");
+    Navigator.of(context)
+        .pushReplacementNamed(_isLoggedIn ? 'bottomNavy' : 'welcome');
   }
 
   @override
@@ -71,8 +75,8 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
               const SizedBox(height: 20),
               Text(
-                'Aby Eatery',
-                style: GoogleFonts.oswald(
+                'Abyeatery',
+                style: GoogleFonts.quicksand(
                   fontSize: 40,
                   fontWeight: FontWeight.bold,
                 ),

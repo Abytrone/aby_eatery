@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -18,21 +16,21 @@ class WelcomeScreen extends StatelessWidget {
           width: double.infinity,
           decoration: const BoxDecoration(
             image: DecorationImage(
-              image: AssetImage('assets/images/welcome_screen.jpg'),
+              image: AssetImage('assets/images/miti-qYreP9QOdrk-unsplash.jpg'),
               fit: BoxFit.cover,
             ),
           ),
           child: Stack(
             alignment: AlignmentDirectional.center,
             children: [
-              Positioned.fill(
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
-                  child: Container(
-                    color: Colors.black.withOpacity(0.3),
-                  ),
-                ),
-              ),
+              // Positioned.fill(
+              //   child: BackdropFilter(
+              //     filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
+              //     child: Container(
+              //       color: Colors.black.withOpacity(0.3),
+              //     ),
+              //   ),
+              // ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,

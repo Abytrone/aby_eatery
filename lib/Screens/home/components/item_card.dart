@@ -72,7 +72,7 @@ class ItemCard extends StatelessWidget {
                       color: kBackgroundColor,
                     ),
                     onPressed: () {},
-                  )
+                  ),
                 ],
               ),
             )

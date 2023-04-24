@@ -10,12 +10,12 @@ ThemeData lightThemeData(BuildContext context) {
     primaryColor: kPrimaryColor,
     brightness: Brightness.light,
     useMaterial3: true,
-    scaffoldBackgroundColor: kLightBackgroundColor,
+    // scaffoldBackgroundColor: kLightBackgroundColor,
     appBarTheme: const AppBarTheme(
       centerTitle: false,
       elevation: 0,
-      backgroundColor: Colors.transparent,
-      foregroundColor: kDarkColor,
+      // backgroundColor: Colors.transparent,
+      // foregroundColor: kDarkColor,
     ),
     iconTheme: const IconThemeData(color: kDarkColor),
     textTheme: Theme.of(context).textTheme.apply(
@@ -23,14 +23,21 @@ ThemeData lightThemeData(BuildContext context) {
           fontFamily: 'Okine',
         ),
     colorScheme: const ColorScheme.light(
+      primary: kPrimaryColor,
       secondary: kSecondaryColor,
       error: kErrorColor,
     ),
-    bottomNavigationBarTheme: BottomNavigationBarThemeData(
-      backgroundColor: kWhiteColor,
-      selectedItemColor: kContentColorLightTheme.withOpacity(0.7),
-      unselectedItemColor: kContentColorLightTheme.withOpacity(0.32),
-      selectedIconTheme: const IconThemeData(color: kPrimaryColor),
+    inputDecorationTheme: const InputDecorationTheme(
+      labelStyle: TextStyle(
+        color: kDarkColor,
+        fontFamily: 'Okine',
+      ),
+    ),
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      elevation: 0,
+      unselectedItemColor: kDarkColor,
+      selectedIconTheme: IconThemeData(color: kPrimaryColor),
+      unselectedIconTheme: IconThemeData(color: kPrimaryColor),
       showUnselectedLabels: true,
     ),
   );
