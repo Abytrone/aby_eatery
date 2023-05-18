@@ -18,10 +18,22 @@ class CommentItem extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    const CircleAvatar(
-                      foregroundImage:
-                          AssetImage('assets/images/pexels-pixabay-415829.jpg'),
-                      radius: 25,
+                    SizedBox(
+                      height: 45,
+                      width: 45,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(60),
+                        child: FadeInImage.assetNetwork(
+                          placeholder:
+                              'assets/images/placeholder_landscape.png',
+                          image:
+                              'http://localhost/v1/storage/buckets/64497203b2fc22dae964/files/644e6868b76f9b1fd527/view?project=6435978f59cab443127d&mode=admin',
+                          // ignore: invalid_use_of_protected_member
+                          // 'http://$endPoint/storage/buckets/$profilePicturesBucket/files/${userController.user.value['image']}/view?project=$projectId',
+                          fit: BoxFit.cover,
+                          placeholderFit: BoxFit.cover,
+                        ),
+                      ),
                     ),
                     const SizedBox(width: 20),
                     Text(

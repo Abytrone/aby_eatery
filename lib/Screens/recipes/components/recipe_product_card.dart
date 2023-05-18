@@ -6,33 +6,36 @@ import '../../../constants.dart';
 class RecipeProductCard extends StatelessWidget {
   const RecipeProductCard({
     Key? key,
-    required this.username,
     required this.title,
-    required this.userImage,
     required this.productImage,
   }) : super(key: key);
-  final String username;
   final String title;
-  final String userImage;
   final String productImage;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
-      child: Container(
+      child: SizedBox(
         height: 250,
         width: 180,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: NetworkImage(productImage),
-            fit: BoxFit.cover,
-          ),
-          borderRadius: const BorderRadius.all(Radius.circular(20)),
-        ),
         child: Stack(
           alignment: AlignmentDirectional.bottomStart,
           children: [
+            Positioned.fill(
+              child: SizedBox(
+                height: 250,
+                width: 180,
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(20)),
+                  child: FadeInImage.assetNetwork(
+                    placeholder: 'assets/images/placeholder_potrait.png',
+                    image: productImage,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ),
             Positioned.fill(
               child: Container(
                 decoration: BoxDecoration(
@@ -53,6 +56,7 @@ class RecipeProductCard extends StatelessWidget {
               padding: const EdgeInsets.all(10.0),
               child: Text(
                 title,
+                textAlign: TextAlign.start,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 2,
                 style: Theme.of(context).textTheme.titleMedium!.copyWith(

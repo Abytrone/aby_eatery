@@ -51,7 +51,7 @@ ThemeData darkThemeData(BuildContext context) {
     brightness: Brightness.dark,
     // colorScheme: kContentColorDarkTheme,
     scaffoldBackgroundColor: kContentColorLightTheme,
-    appBarTheme: AppBarTheme(
+    appBarTheme: const AppBarTheme(
       centerTitle: false,
       elevation: 0,
     ),

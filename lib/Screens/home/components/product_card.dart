@@ -20,19 +20,26 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
-      child: Container(
+      child: SizedBox(
         height: 250,
         width: 180,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: NetworkImage(productImage),
-            fit: BoxFit.cover,
-          ),
-          borderRadius: const BorderRadius.all(Radius.circular(20)),
-        ),
         child: Stack(
           alignment: AlignmentDirectional.bottomStart,
           children: [
+            Positioned.fill(
+              child: SizedBox(
+                height: 250,
+                width: 180,
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(20)),
+                  child: FadeInImage.assetNetwork(
+                    placeholder: 'assets/images/placeholder_potrait.png',
+                    image: productImage,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ),
             Positioned.fill(
               child: Container(
                 decoration: BoxDecoration(
@@ -53,6 +60,7 @@ class ProductCard extends StatelessWidget {
               padding: const EdgeInsets.all(10.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     title,
@@ -65,9 +73,21 @@ class ProductCard extends StatelessWidget {
                   const SizedBox(height: 15),
                   Row(
                     children: [
-                      CircleAvatar(
-                        foregroundImage: AssetImage(userImage),
-                        radius: 10,
+                      SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: FadeInImage.assetNetwork(
+                            placeholder:
+                                'assets/images/placeholder_landscape.png',
+                            image: userImage,
+                            // ignore: invalid_use_of_protected_member
+                            // 'http://$endPoint/storage/buckets/$profilePicturesBucket/files/${userController.user.value['image']}/view?project=$projectId',
+                            fit: BoxFit.cover,
+                            placeholderFit: BoxFit.cover,
+                          ),
+                        ),
                       ),
                       const SizedBox(width: 10),
                       Text(

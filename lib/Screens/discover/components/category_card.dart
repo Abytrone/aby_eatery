@@ -15,18 +15,28 @@ class CategoryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
-      child: Container(
+      child: SizedBox(
         width: 180,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: NetworkImage(categoryImage),
-            fit: BoxFit.cover,
-          ),
-          borderRadius: const BorderRadius.all(Radius.circular(20)),
-        ),
+        // decoration: BoxDecoration(
+        //   image: DecorationImage(
+        //     image: NetworkImage(categoryImage),
+        //     fit: BoxFit.cover,
+        //   ),
+        //   borderRadius: const BorderRadius.all(Radius.circular(20)),
+        // ),
         child: Stack(
           alignment: AlignmentDirectional.bottomStart,
           children: [
+            Positioned.fill(
+              child: ClipRRect(
+                borderRadius: const BorderRadius.all(Radius.circular(20)),
+                child: FadeInImage.assetNetwork(
+                  placeholder: 'assets/images/placeholder_landscape.png',
+                  image: categoryImage,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
             Positioned.fill(
               child: Container(
                 decoration: BoxDecoration(

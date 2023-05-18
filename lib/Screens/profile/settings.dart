@@ -1,12 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constants.dart';
 import '../../services/auth_services.dart';
 import 'components/settings_item.dart';
 
-class SettingScreen extends StatelessWidget {
-  SettingScreen({Key? key}) : super(key: key);
+class SettingScreen extends StatefulWidget {
+  const SettingScreen({Key? key}) : super(key: key);
+
+  @override
+  State<SettingScreen> createState() => _SettingScreenState();
+}
+
+class _SettingScreenState extends State<SettingScreen> {
   final AuthServices authServices = AuthServices();
+
+  @override
+  void initState() {
+    getSession();
+    super.initState();
+  }
+
+  String? sessionID;
+
+  getSession() async {
+    final SharedPreferences localStorage =
+        await SharedPreferences.getInstance();
+    setState(() {
+      sessionID = localStorage.getString('sessionId');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,8 +70,7 @@ class SettingScreen extends StatelessWidget {
               text: 'Logout',
               color: kErrorColor,
               onTap: () {
-                authServices.logout(
-                    sessionId: authServices.box.read('sessionId'));
+                authServices.logout(sessionId: sessionID!);
               },
             ),
           ],

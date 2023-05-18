@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import '../../../constants.dart';
 
 class InstructionItem extends StatelessWidget {
-  const InstructionItem(
-      {Key? key,
-      required this.number,
-      required this.text,
-      required this.images})
-      : super(key: key);
+  const InstructionItem({
+    Key? key,
+    required this.number,
+    required this.text,
+    // required this.images,
+  }) : super(key: key);
   final String number;
   final String text;
-  final List<String> images;
+  // final List<String> images;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -47,29 +47,29 @@ class InstructionItem extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodyMedium!.copyWith(),
                   ),
                 ),
-                const SizedBox(height: 10),
-                SizedBox(
-                  height: 80,
-                  child: ListView.builder(
-                    itemCount: images.length,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(right: 8.0),
-                        child: Container(
-                          width: 110,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage(images[index]),
-                              fit: BoxFit.cover,
-                            ),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
+                // const SizedBox(height: 10),
+                // SizedBox(
+                //   height: 80,
+                //   child: ListView.builder(
+                //     itemCount: images.length,
+                //     scrollDirection: Axis.horizontal,
+                //     itemBuilder: (context, index) {
+                //       return Padding(
+                //         padding: const EdgeInsets.only(right: 8.0),
+                //         child: Container(
+                //           width: 110,
+                //           decoration: BoxDecoration(
+                //             image: DecorationImage(
+                //               image: AssetImage(images[index]),
+                //               fit: BoxFit.cover,
+                //             ),
+                //             borderRadius: BorderRadius.circular(10),
+                //           ),
+                //         ),
+                //       );
+                //     },
+                //   ),
+                // ),
               ],
             ),
           ),

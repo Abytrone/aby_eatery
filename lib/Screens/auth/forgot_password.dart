@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
+import '../../components/input_field.dart';
+import '../../components/primary_button.dart';
 import '../../constants.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
@@ -52,58 +54,27 @@ class ForgotPasswordScreen extends StatelessWidget {
                     key: formKey,
                     child: Column(
                       children: [
-                        TextFormField(
-                          decoration: const InputDecoration(
-                            labelText: 'Phone Number/Email',
-                            hintText: 'Enter your phone number/email',
-                          ),
-                          cursorColor: kPrimaryColor,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Please enter your phone number/email address';
+                        AuthInputField(
+                          labelText: 'Email',
+                          hintText: 'Enter your email',
+                          validator: (email) {
+                            String pattern =
+                                r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
+                                r"{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]"
+                                r"{0,253}[a-zA-Z0-9])?)*$";
+                            RegExp regex = RegExp(pattern);
+                            if (!regex.hasMatch(email!)) {
+                              return 'Enter a valid email address';
+                            } else if (email.isEmpty) {
+                              return "* Required";
+                            } else {
+                              return null;
                             }
-                            return null;
-                          },
-                          onSaved: (value) {
-                            // Save the form field value to a variable or database.
                           },
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 50),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: TextButton(
-                                  onPressed: () {
-                                    Get.toNamed('home');
-                                  },
-                                  style: ButtonStyle(
-                                    padding: MaterialStateProperty.all(
-                                        const EdgeInsets.symmetric(
-                                      horizontal: 130,
-                                      vertical: 17,
-                                    )),
-                                    backgroundColor: MaterialStateProperty.all(
-                                        kPrimaryColor),
-                                    shape: MaterialStateProperty.all(
-                                      RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(40.0),
-                                      ),
-                                    ),
-                                  ),
-                                  child: Text(
-                                    'Continue',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium!
-                                        .copyWith(
-                                            fontSize: 17, color: kWhiteColor),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                        PrimaryButton(
+                          onPressed: () {},
+                          labelText: 'Continue',
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 30),

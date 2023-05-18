@@ -8,10 +8,14 @@ class AbyInputField extends StatelessWidget {
     this.label,
     required this.hintText,
     this.maxLines,
+    required this.controller,
+    this.validator,
   });
   final String? label;
   final String hintText;
   final int? maxLines;
+  final TextEditingController? controller;
+  final String? Function(String?)? validator;
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +36,8 @@ class AbyInputField extends StatelessWidget {
               borderRadius: BorderRadius.circular(15),
             ),
             child: TextFormField(
+              controller: controller,
+              validator: validator,
               maxLines: maxLines,
               decoration: InputDecoration(
                 hintText: hintText,
@@ -53,8 +59,12 @@ class AbyInputFieldSecond extends StatelessWidget {
   const AbyInputFieldSecond({
     super.key,
     required this.hintText,
+    required this.controller,
+    this.validator,
   });
   final String hintText;
+  final TextEditingController? controller;
+  final String? Function(String?)? validator;
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +78,8 @@ class AbyInputFieldSecond extends StatelessWidget {
             borderRadius: BorderRadius.circular(15),
           ),
           child: TextFormField(
+            validator: validator,
+            controller: controller,
             decoration: InputDecoration(
               hintText: hintText,
               hintStyle: TextStyle(
@@ -88,9 +100,13 @@ class AbyInputFieldThird extends StatelessWidget {
     super.key,
     required this.hintText,
     this.maxLines,
+    required this.controller,
+    this.validator,
   });
   final String hintText;
   final int? maxLines;
+  final TextEditingController? controller;
+  final String? Function(String?)? validator;
 
   @override
   Widget build(BuildContext context) {
@@ -104,6 +120,8 @@ class AbyInputFieldThird extends StatelessWidget {
             borderRadius: BorderRadius.circular(15),
           ),
           child: TextFormField(
+            controller: controller,
+            validator: validator,
             maxLines: maxLines,
             decoration: InputDecoration(
               hintText: hintText,
@@ -121,7 +139,13 @@ class AbyInputFieldThird extends StatelessWidget {
 }
 
 class AbyInputFieldFourth extends StatelessWidget {
-  const AbyInputFieldFourth({Key? key}) : super(key: key);
+  const AbyInputFieldFourth({
+    Key? key,
+    required this.controller,
+    this.validator,
+  }) : super(key: key);
+  final TextEditingController? controller;
+  final String? Function(String?)? validator;
 
   @override
   Widget build(BuildContext context) {
@@ -134,6 +158,8 @@ class AbyInputFieldFourth extends StatelessWidget {
           borderRadius: BorderRadius.circular(15),
         ),
         child: TextFormField(
+          controller: controller,
+          validator: validator,
           maxLines: 5,
           decoration: InputDecoration(
             hintText: 'Instruction',

@@ -66,7 +66,7 @@ class DiscoverScreen extends StatelessWidget {
                         child: ProductCard(
                           username: 'Rayaan Yahaya',
                           userImage:
-                              'assets/images/pexels-koolshooters-6976943.jpg',
+                              'https://images.unsplash.com/photo-1482049016688-2d3e1b311543?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fGZvb2R8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60',
                           title: 'Original Wasawasa Recipe',
                           productImage:
                               'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8Zm9vZHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60',
@@ -142,7 +142,7 @@ class DiscoverScreen extends StatelessWidget {
                         child: ProductCard(
                           username: 'Rayaan Yahaya',
                           userImage:
-                              'assets/images/pexels-koolshooters-6976943.jpg',
+                              'https://images.unsplash.com/photo-1482049016688-2d3e1b311543?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fGZvb2R8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60',
                           title: 'Original Wasawasa Recipe',
                           productImage:
                               'https://images.unsplash.com/photo-1484723091739-30a097e8f929?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTZ8fGZvb2R8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60',
@@ -181,7 +181,7 @@ class DiscoverScreen extends StatelessWidget {
                         child: ProductCard(
                           username: 'Rayaan Yahaya',
                           userImage:
-                              'assets/images/pexels-koolshooters-6976943.jpg',
+                              'https://images.unsplash.com/photo-1482049016688-2d3e1b311543?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fGZvb2R8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60',
                           title: 'Original Wasawasa Recipe',
                           productImage:
                               'https://images.unsplash.com/photo-1467003909585-2f8a72700288?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fGZvb2R8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60',

@@ -12,8 +12,9 @@ class AdsWidget extends StatelessWidget {
         borderRadius: const BorderRadius.all(
           Radius.circular(20),
         ),
-        child: Image(
-          image: AssetImage(image),
+        child: FadeInImage.assetNetwork(
+          placeholder: 'assets/images/placeholder_landscape.png',
+          image: image,
           fit: BoxFit.cover,
         ),
       ),

@@ -8,9 +8,12 @@ import '../Screens/home/home.dart';
 import '../Screens/profile/profile.dart';
 import '../Screens/recipes/recipes.dart';
 import '../constants.dart';
+import '../controllers/products_controller.dart';
+import '../controllers/user_controller.dart';
 
 class BottomNavy extends StatefulWidget {
-  const BottomNavy({Key? key}) : super(key: key);
+  const BottomNavy({Key? key, this.page}) : super(key: key);
+  final int? page;
 
   @override
   State<BottomNavy> createState() => _BottomNavyState();
@@ -19,10 +22,15 @@ class BottomNavy extends StatefulWidget {
 class _BottomNavyState extends State<BottomNavy> {
   int _currentIndex = 0;
   PageController? _pageController;
+  final UserController userController = Get.put(UserController());
+  final ProductsController productsController = Get.put(ProductsController());
 
   @override
   void initState() {
     super.initState();
+    userController.getUser();
+    productsController.getAuthUserProducts();
+    productsController.getAllProducts();
     _pageController = PageController();
   }
 
@@ -80,7 +88,7 @@ class _BottomNavyState extends State<BottomNavy> {
       bottomNavigationBar: LayoutBuilder(
         builder: (context, constraints) {
           return BottomNavigationBar(
-            currentIndex: _currentIndex,
+            currentIndex: widget.page ?? _currentIndex,
             onTap: (index) {
               setState(() => _currentIndex = index);
               _pageController!.jumpToPage(index);

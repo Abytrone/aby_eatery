@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:lottie/lottie.dart';
 
+import '../../components/input_field.dart';
+import '../../components/primary_button.dart';
 import '../../constants.dart';
 import '../../services/auth_services.dart';
 import 'components/social_button.dart';
@@ -17,21 +19,21 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        leading: IconButton(
-          icon: SvgPicture.asset(
-            'assets/icons/back.svg',
-            colorFilter: const ColorFilter.mode(
-              kDarkColor,
-              BlendMode.srcIn,
-            ),
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ),
+      // appBar: AppBar(
+      //   elevation: 0,
+      //   leading: IconButton(
+      //     icon: SvgPicture.asset(
+      //       'assets/icons/back.svg',
+      //       colorFilter: const ColorFilter.mode(
+      //         kDarkColor,
+      //         BlendMode.srcIn,
+      //       ),
+      //     ),
+      //     onPressed: () {
+      //       Navigator.pop(context);
+      //     },
+      //   ),
+      // ),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Obx(
@@ -60,46 +62,30 @@ class LoginScreen extends StatelessWidget {
                       key: formKey,
                       child: Column(
                         children: [
-                          TextFormField(
+                          AuthInputField(
                             controller: email,
-                            decoration: const InputDecoration(
-                              labelText: 'Email',
-                              hintText: 'Enter your email',
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: kPrimaryColor),
-                              ),
-                            ),
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return '* Required';
+                            labelText: 'Email',
+                            hintText: 'Enter your email',
+                            validator: (email) {
+                              String pattern =
+                                  r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
+                                  r"{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]"
+                                  r"{0,253}[a-zA-Z0-9])?)*$";
+                              RegExp regex = RegExp(pattern);
+                              if (!regex.hasMatch(email!)) {
+                                return 'Enter a valid email address';
+                              } else if (email.isEmpty) {
+                                return "* Required";
+                              } else {
+                                return null;
                               }
-                              return null;
                             },
                           ),
                           const SizedBox(height: 20),
-                          TextFormField(
+                          AuthInputField(
                             controller: password,
-                            decoration: InputDecoration(
-                              labelText: 'Password',
-                              hintText: 'Enter your password',
-                              suffixIconColor: kDarkColor,
-                              suffixIcon: obsecure.value
-                                  ? IconButton(
-                                      onPressed: () {
-                                        obsecure(false);
-                                      },
-                                      icon: const Icon(Iconsax.eye_slash),
-                                    )
-                                  : IconButton(
-                                      onPressed: () {
-                                        obsecure(true);
-                                      },
-                                      icon: const Icon(Iconsax.eye),
-                                    ),
-                              enabledBorder: const UnderlineInputBorder(
-                                borderSide: BorderSide(color: kPrimaryColor),
-                              ),
-                            ),
+                            labelText: 'Password',
+                            hintText: 'Enter your password',
                             obscureText: obsecure.value,
                             validator: (value) {
                               if (value!.isEmpty) {
@@ -107,79 +93,52 @@ class LoginScreen extends StatelessWidget {
                               }
                               return null;
                             },
+                            suffixIcon: obsecure.value
+                                ? IconButton(
+                                    onPressed: () {
+                                      obsecure(false);
+                                    },
+                                    icon: const Icon(Iconsax.eye_slash),
+                                  )
+                                : IconButton(
+                                    onPressed: () {
+                                      obsecure(true);
+                                    },
+                                    icon: const Icon(Iconsax.eye),
+                                  ),
                           ),
                           authServices.loading.isFalse
-                              ? Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 50),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: TextButton(
-                                          onPressed: () {
-                                            if (formKey.currentState!
-                                                .validate()) {
-                                              authServices.login(
-                                                email: email.text,
-                                                password: password.text,
-                                              );
-                                            }
-                                          },
-                                          style: ButtonStyle(
-                                            padding: MaterialStateProperty.all(
-                                                const EdgeInsets.symmetric(
-                                              horizontal: 130,
-                                              vertical: 17,
-                                            )),
-                                            backgroundColor:
-                                                MaterialStateProperty.all(
-                                                    kPrimaryColor),
-                                            shape: MaterialStateProperty.all(
-                                              RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(40.0),
-                                              ),
-                                            ),
-                                          ),
-                                          child: Text(
-                                            'Sign in',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyMedium!
-                                                .copyWith(
-                                                    fontSize: 17,
-                                                    color: kWhiteColor),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                              ? PrimaryButton(
+                                  labelText: 'Sign in',
+                                  onPressed: () {
+                                    if (formKey.currentState!.validate()) {
+                                      authServices.login(
+                                        email: email.text,
+                                        password: password.text,
+                                      );
+                                    }
+                                  },
                                 )
-                              : const Padding(
-                                  padding: EdgeInsets.all(50),
-                                  child: Center(
-                                    child: CircularProgressIndicator(),
-                                  ),
+                              : Lottie.asset(
+                                  'assets/animations/95944-loading-animation.json',
+                                  repeat: true,
                                 ),
                           Column(
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.only(top: 10),
-                                child: InkWell(
-                                  onTap: () {
-                                    Get.toNamed('forgotPassword');
-                                  },
-                                  child: Text(
-                                    'Forgot Password?',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium!
-                                        .copyWith(
-                                          fontSize: 17,
-                                          color: kPrimaryColor,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                  ),
+                              InkWell(
+                                onTap: () {
+                                  Get.toNamed('forgotPassword');
+                                },
+                                child: Text(
+                                  'Forgot Password?',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium!
+                                      .copyWith(
+                                        fontSize: 17,
+                                        color: kPrimaryColor,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                 ),
                               )
                             ],

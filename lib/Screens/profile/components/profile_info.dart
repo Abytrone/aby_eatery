@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../../../constants.dart';
+import '../../../controllers/user_controller.dart';
+import '../../../services/constants.dart';
+
+final UserController userController = Get.find();
 
 class PersonalInfo extends StatelessWidget {
   const PersonalInfo({
@@ -15,27 +20,63 @@ class PersonalInfo extends StatelessWidget {
       children: [
         Row(
           children: [
-            const CircleAvatar(
-              foregroundImage:
-                  AssetImage('assets/images/pexels-pixabay-415829.jpg'),
-              radius: 40,
+            SizedBox(
+              height: 80,
+              width: 80,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(60),
+                child: FadeInImage.assetNetwork(
+                  placeholder: 'assets/images/placeholder_landscape.png',
+                  image:
+                      // ignore: invalid_use_of_protected_member
+                      'http://$endPoint/storage/buckets/$profilePicturesBucket/files/${userController.user.value['image']}/view?project=$projectId',
+                  fit: BoxFit.cover,
+                  placeholderFit: BoxFit.cover,
+                ),
+              ),
             ),
             const SizedBox(width: 10),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Rayaan Yahaya',
+                  // ignore: invalid_use_of_protected_member
+                  userController.user.value['name'],
                   style: Theme.of(context)
                       .textTheme
                       .titleLarge!
                       .copyWith(fontWeight: FontWeight.bold),
                 ),
-                Text(
-                  '@rayaan_yahaya',
-                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                Row(
+                  children: [
+                    Text(
+                      // ignore: invalid_use_of_protected_member
+                      userController.user.value['email'],
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
                         color: kDarkColor.withOpacity(.5),
                       ),
+                    ),
+                    Visibility(
+                      // ignore: invalid_use_of_protected_member
+                      visible: userController.user.value['emailVerification'] ==
+                          false,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 2),
+                        decoration: BoxDecoration(
+                          color: kErrorColor.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            'unverified',
+                            style: TextStyle(color: kErrorColor),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

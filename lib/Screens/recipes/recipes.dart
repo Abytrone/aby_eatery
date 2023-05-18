@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../../constants.dart';
-import '../home/product_detail.dart';
 import 'components/recipe_product_card.dart';
 
 class MyRecipes extends StatefulWidget {
@@ -91,12 +89,9 @@ class _MyRecipesState extends State<MyRecipes> with TickerProviderStateMixin {
                       itemBuilder: (context, index) {
                         return InkWell(
                           onTap: () {
-                            Get.to(() => const ProductDetailScreen());
+                            // Get.to(() => const ProductDetailScreen());
                           },
                           child: const RecipeProductCard(
-                            username: 'Rayaan Yahaya',
-                            userImage:
-                                'assets/images/pexels-pixabay-415829.jpg',
                             title: 'Original Wasawasa Recipe',
                             productImage:
                                 'https://images.unsplash.com/photo-1482049016688-2d3e1b311543?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fGZvb2R8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60',
@@ -118,12 +113,9 @@ class _MyRecipesState extends State<MyRecipes> with TickerProviderStateMixin {
                       itemBuilder: (context, index) {
                         return InkWell(
                           onTap: () {
-                            Get.to(() => const ProductDetailScreen());
+                            // Get.to(() => const ProductDetailScreen());
                           },
                           child: const RecipeProductCard(
-                            username: 'Rayaan Yahaya',
-                            userImage:
-                                'assets/images/pexels-pixabay-415829.jpg',
                             title: 'Original Wasawasa Recipe',
                             productImage:
                                 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Zm9vZHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60',

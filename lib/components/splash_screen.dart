@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../services/auth_services.dart';
 
@@ -23,12 +23,11 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
   }
 
-  final GetStorage box = GetStorage();
   final AuthServices authServices = AuthServices();
   void _checkIfLoggedIn() async {
     // check if token is there
-
-    var token = box.read('sessionId');
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var token = localStorage.getString('sessionId');
     if (token != null) {
       setState(() {
         _isLoggedIn = true;

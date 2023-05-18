@@ -69,7 +69,7 @@ class ItemCard extends StatelessWidget {
                   IconButton(
                     icon: SvgPicture.asset(
                       'assets/icons/heart.svg',
-                      color: kBackgroundColor,
+                      // color: kBackgroundColor,
                     ),
                     onPressed: () {},
                   ),
