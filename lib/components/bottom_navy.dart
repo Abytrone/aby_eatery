@@ -31,6 +31,7 @@ class _BottomNavyState extends State<BottomNavy> {
     userController.getUser();
     productsController.getAuthUserProducts();
     productsController.getAllProducts();
+    productsController.getRecentProducts();
     _pageController = PageController();
   }
 

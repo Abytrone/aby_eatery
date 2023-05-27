@@ -15,7 +15,6 @@ class ProductsController extends GetxController {
   final ProductServices productServices = ProductServices();
 
   Rx<Diets>? diets = Rx<Diets>(const Diets(products: null, user: null));
-
   Future<Diets?> getAllProducts() async {
     final result = await productServices.getAllProducts();
     Diets? diet;
@@ -25,6 +24,34 @@ class ProductsController extends GetxController {
       diet = Diets(products: result, user: owner!);
     }
     diets!.value = diet!;
+    update();
+    return diet;
+  }
+
+  Rx<Diets>? recentDiets = Rx<Diets>(const Diets(products: null, user: null));
+  Future<Diets?> getRecentProducts() async {
+    final result = await productServices.getRecentProducts();
+    Diets? diet;
+    for (var i = 0; i < result!.documents.length; i++) {
+      final owner = await productServices.getProductOwner(
+          userId: result.documents[i].data['userid']);
+      diet = Diets(products: result, user: owner!);
+    }
+    recentDiets!.value = diet!;
+    update();
+    return diet;
+  }
+
+  Rx<Diets>? searchDiets = Rx<Diets>(const Diets(products: null, user: null));
+  Future<Diets?> searchProducts({required String search}) async {
+    final result = await productServices.searchProducts(search: search);
+    Diets? diet;
+    for (var i = 0; i < result!.documents.length; i++) {
+      final owner = await productServices.getProductOwner(
+          userId: result.documents[i].data['userid']);
+      diet = Diets(products: result, user: owner!);
+    }
+    searchDiets!.value = diet!;
     update();
     return diet;
   }
@@ -41,7 +68,7 @@ class ProductsController extends GetxController {
 
   Future<bool> createProduct({
     required String name,
-    categoryId,
+    // categoryId,
     required String description,
     required List<String> nutrition,
     required List<String> ingredients,
@@ -73,7 +100,7 @@ class ProductsController extends GetxController {
             ingredients: ingredients,
             instructions: instructions,
             status: status,
-            categoryId: categoryId,
+            // categoryId: categoryId,
             createdAt: createdAt,
           );
           if (result == true) {

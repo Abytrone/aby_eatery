@@ -87,8 +87,33 @@ class ProductServices {
         databaseId: databaseId,
         collectionId: dietsCollectionId, // diets
         queries: [
-          Query.orderAsc('created_at'),
-          Query.limit(10),
+          Query.orderDesc('name'),
+          Query.limit(5),
+        ],
+      );
+      // print(result.documents);
+      return result;
+    } on AppwriteException catch (e) {
+      // print(e.message);
+      Get.snackbar(
+        'Error Message (${e.code})',
+        e.message!,
+        snackPosition: SnackPosition.BOTTOM,
+        duration: const Duration(seconds: 5),
+        colorText: Colors.white,
+        backgroundColor: kErrorColor,
+      );
+      return null;
+    }
+  }
+
+  Future<model.DocumentList?> searchProducts({required String search}) async {
+    try {
+      final result = await databases.listDocuments(
+        databaseId: databaseId,
+        collectionId: dietsCollectionId, // diets
+        queries: [
+          Query.search('name', search),
         ],
       );
       // print(result.documents);
@@ -138,7 +163,7 @@ class ProductServices {
 
   Future<bool> createProduct({
     required String name,
-    categoryId,
+    // categoryId,
     required List<String> images,
     required String description,
     required List<String> nutrition,
@@ -155,6 +180,61 @@ class ProductServices {
         collectionId: dietsCollectionId, // diets
         data: {
           'userid': currentUser.$id,
+          'name': name,
+          'images': images,
+          'description': description,
+          'nutrition': nutrition,
+          'ingredients': ingredients,
+          'instructions': instructions,
+          'status': status,
+          // 'categoryid': categoryId,
+          // 'created_at': createdAt,
+        },
+      );
+      Get.snackbar(
+        'Success Message',
+        'You have successfully uploaded a product',
+        snackPosition: SnackPosition.BOTTOM,
+        duration: const Duration(seconds: 5),
+        colorText: Colors.white,
+        backgroundColor: kPrimaryColor,
+      );
+      // print(result.documents);
+      return true;
+    } on AppwriteException catch (e) {
+      // print(e.message);
+      Get.snackbar(
+        'Error Message (${e.code})',
+        e.message!,
+        snackPosition: SnackPosition.BOTTOM,
+        duration: const Duration(seconds: 5),
+        colorText: Colors.white,
+        backgroundColor: kErrorColor,
+      );
+      return false;
+    }
+  }
+
+  Future<bool> updateProduct({
+    required String name,
+    documentId,
+    categoryId,
+    required List<String> images,
+    required String description,
+    required List<String> nutrition,
+    required List<String> ingredients,
+    required List<String> instructions,
+    required int status,
+    required String createdAt,
+  }) async {
+    try {
+      // final currentUser = await account.get();
+      await databases.updateDocument(
+        documentId: documentId,
+        databaseId: databaseId,
+        collectionId: dietsCollectionId, // diets
+        data: {
+          // 'userid': currentUser.$id,
           'name': name,
           'images': images,
           'description': description,

@@ -90,7 +90,7 @@ class _CreateRecipeScreenState extends State<CreateRecipeScreen> {
                       ingredients: ingredient,
                       instructions: instruction,
                       status: 0,
-                      categoryId: category.text,
+                      // categoryId: category.text,
                       createdAt: DateTime.now().toString(),
                     );
                   }
@@ -128,7 +128,7 @@ class _CreateRecipeScreenState extends State<CreateRecipeScreen> {
                       ingredients: ingredient,
                       instructions: instruction,
                       status: 1,
-                      categoryId: category.text,
+                      // categoryId: category.text,
                       createdAt: DateTime.now().toString(),
                     );
                   }

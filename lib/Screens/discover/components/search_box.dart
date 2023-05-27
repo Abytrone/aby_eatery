@@ -4,7 +4,8 @@ import 'package:flutter_svg/svg.dart';
 import '../../../constants.dart';
 
 class SearchBox extends StatelessWidget {
-  const SearchBox({super.key});
+  const SearchBox({super.key, this.controller});
+  final TextEditingController? controller;
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +16,7 @@ class SearchBox extends StatelessWidget {
         borderRadius: BorderRadius.circular(15),
       ),
       child: TextFormField(
+        controller: controller,
         decoration: InputDecoration(
           label: const Text(
             'Search for Recipe or Chef',
