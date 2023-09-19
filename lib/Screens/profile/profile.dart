@@ -1,4 +1,5 @@
 import 'package:aby_eatery/Screens/profile/settings.dart';
+import 'package:aby_eatery/components/empty_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
@@ -27,11 +28,9 @@ class _ProfileScreenState extends State<ProfileScreen>
     with TickerProviderStateMixin {
   final UserController userController = Get.find();
   final ProductsController productsController = Get.find();
-
   late TabController _tabController;
   @override
   void initState() {
-    // print(productsController.userProducts.value['products'][0].data['image'][0]);
     _tabController = TabController(length: 2, vsync: this);
     super.initState();
   }
@@ -103,13 +102,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                 child: TabBarView(
                   controller: _tabController,
                   children: [
-                    // ignore: invalid_use_of_protected_member
-                    productsController.userProducts.value == {}
-                        ? const Center(
-                            child: Text(
-                            'Empty',
-                            style: TextStyle(color: kDarkColor),
-                          ))
+                    productsController.userProducts.value.value == null
+                        ? const Center(child: EmptyWidget())
                         : RefreshIndicator(
                             onRefresh: () {
                               return productsController.getAuthUserProducts();
@@ -120,35 +114,29 @@ class _ProfileScreenState extends State<ProfileScreen>
                                 padding: const EdgeInsets.all(0),
                                 crossAxisCount: 2,
                                 itemCount: productsController
-                                    .userProducts
-                                    // ignore: invalid_use_of_protected_member
-                                    .value['products']
-                                    .length,
+                                    .userProducts.value.value!.documents.length,
                                 crossAxisSpacing: 10,
                                 shrinkWrap: true,
                                 mainAxisSpacing: 0,
                                 itemBuilder: (context, index) {
+                                  final products = productsController
+                                      .userProducts
+                                      .value
+                                      .value!
+                                      .documents[index];
                                   return InkWell(
                                     onTap: () {
                                       Get.to(
                                         () => ProductDetailScreen(
-                                          product: productsController
-                                              .userProducts
-                                              // ignore: invalid_use_of_protected_member
-                                              .value['products'][index],
-                                          user: null,
+                                          product: products,
                                         ),
                                       );
                                     },
                                     child: RecipeProductCard(
-                                      title: productsController
-                                          .userProducts
-                                          // ignore: invalid_use_of_protected_member
-                                          .value['products'][index]
-                                          .data['name'],
+                                      id: products.$id,
+                                      title: products.data['name'],
                                       productImage:
-                                          // ignore: invalid_use_of_protected_member
-                                          'http://$endPoint/storage/buckets/$productPicturesBucket/files/${productsController.userProducts.value['products'][index].data['images'][0]}/view?project=$projectId',
+                                          'https://$endPoint/storage/buckets/$productPicturesBucket/files/${products.data['images'][0]}/view?project=$projectId',
                                     ),
                                   );
                                 },

@@ -1,12 +1,11 @@
 import 'package:aby_eatery/services/appwrite_server.dart';
+import 'package:aby_eatery/services/local_service.dart';
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart' as model;
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../components/status_dialog.dart';
-import '../constants.dart';
 import 'constants.dart';
 
 class AuthServices {
@@ -33,31 +32,16 @@ class AuthServices {
         const StatusDialog(),
         barrierDismissible: false,
       );
-      Future.delayed(
-        const Duration(seconds: 6),
-        () {
-          Get.offAllNamed('login');
-        },
-      );
-      Get.snackbar(
-        'Success Message',
-        'You have successefully signed up ${user.name}.',
-        snackPosition: SnackPosition.BOTTOM,
-        duration: const Duration(seconds: 5),
-        colorText: Colors.white,
-        backgroundColor: kPrimaryColor,
-      );
+      Future.delayed(const Duration(seconds: 6), () {
+        Get.offAllNamed('login');
+      });
+      AbySnackBar.successSnackbar(
+          text: 'You have successefully signed up ${user.name}.');
       loading(false);
       return user.status;
     } on AppwriteException catch (e) {
-      Get.snackbar(
-        'Error Message (${e.code})',
-        e.message!,
-        snackPosition: SnackPosition.BOTTOM,
-        duration: const Duration(seconds: 5),
-        colorText: Colors.white,
-        backgroundColor: kErrorColor,
-      );
+      // print(e);
+      AbySnackBar.errorSnackbar(text: 'Error Message (${e.message})');
       loading(false);
       return false;
     }
@@ -80,24 +64,13 @@ class AuthServices {
       localStorage.setString('userId', user.userId);
       Get.offAllNamed('bottomNavy');
       loading(false);
-      Get.snackbar(
-        'Success Message',
-        'You have successefully signed in ${user.clientName}.',
-        snackPosition: SnackPosition.BOTTOM,
-        duration: const Duration(seconds: 5),
-        colorText: Colors.white,
-        backgroundColor: kPrimaryColor,
-      );
+      AbySnackBar.successSnackbar(
+          text: 'You have successefully signed in ${user.clientName}.');
+
       return true;
     } on AppwriteException catch (e) {
-      Get.snackbar(
-        'Error Message (${e.code})',
-        e.message!,
-        snackPosition: SnackPosition.BOTTOM,
-        duration: const Duration(seconds: 5),
-        colorText: Colors.white,
-        backgroundColor: kErrorColor,
-      );
+      AbySnackBar.errorSnackbar(text: 'Error Message (${e.message})');
+
       loading(false);
       return false;
     }
@@ -111,23 +84,10 @@ class AuthServices {
       localStorage.remove('sessionId');
       localStorage.remove('userId');
       Get.offAllNamed('welcome');
-      Get.snackbar(
-        'Success Message',
-        'You have successefully logged out.',
-        snackPosition: SnackPosition.BOTTOM,
-        duration: const Duration(seconds: 5),
-        colorText: Colors.white,
-        backgroundColor: kPrimaryColor,
-      );
+      AbySnackBar.successSnackbar(text: 'You have successefully logged out.');
       return true;
     } on AppwriteException catch (e) {
-      Get.snackbar(
-        'Error Message (${e.code})',
-        e.message!,
-        snackPosition: SnackPosition.BOTTOM,
-        colorText: Colors.white,
-        backgroundColor: kErrorColor,
-      );
+      AbySnackBar.errorSnackbar(text: 'Error Message (${e.message})');
       return false;
     }
   }
@@ -136,7 +96,8 @@ class AuthServices {
     final currentUser = account.get();
     return currentUser;
   }
-    Future<model.DocumentList?> getAuthUser() async {
+
+  Future<model.DocumentList?> getAuthUser() async {
     try {
       final currentUser = await account.get();
       final result = await databases.listDocuments(
@@ -148,14 +109,7 @@ class AuthServices {
       return result;
     } on AppwriteException catch (e) {
       // print(e.message);
-      Get.snackbar(
-        'Error Message (${e.code})',
-        e.message!,
-        snackPosition: SnackPosition.BOTTOM,
-        duration: const Duration(seconds: 5),
-        colorText: Colors.white,
-        backgroundColor: kErrorColor,
-      );
+      AbySnackBar.errorSnackbar(text: 'Error Message (${e.message})');
       return null;
     }
   }

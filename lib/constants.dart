@@ -16,4 +16,4 @@ const kDarkLightColor = Color(0xFFC8C8C8);
 const kContentColorLightTheme = Color(0xFF1D1D35);
 const kBackgroundColor = Color(0xFF333333);
 
-const kDefaultPadding = 20.0;
+const kDefaultPadding = 10.0;

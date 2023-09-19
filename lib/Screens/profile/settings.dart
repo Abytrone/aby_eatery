@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constants.dart';
-import '../../services/auth_services.dart';
+import 'components/logout_dialog.dart';
 import 'components/settings_item.dart';
 
 class SettingScreen extends StatefulWidget {
@@ -13,8 +13,6 @@ class SettingScreen extends StatefulWidget {
 }
 
 class _SettingScreenState extends State<SettingScreen> {
-  final AuthServices authServices = AuthServices();
-
   @override
   void initState() {
     getSession();
@@ -70,7 +68,8 @@ class _SettingScreenState extends State<SettingScreen> {
               text: 'Logout',
               color: kErrorColor,
               onTap: () {
-                authServices.logout(sessionId: sessionID!);
+                LogoutDialogBox.asyncConfirmDialog(
+                    context: context, sessionID: sessionID!);
               },
             ),
           ],

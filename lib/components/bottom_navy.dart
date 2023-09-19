@@ -8,8 +8,6 @@ import '../Screens/home/home.dart';
 import '../Screens/profile/profile.dart';
 import '../Screens/recipes/recipes.dart';
 import '../constants.dart';
-import '../controllers/products_controller.dart';
-import '../controllers/user_controller.dart';
 
 class BottomNavy extends StatefulWidget {
   const BottomNavy({Key? key, this.page}) : super(key: key);
@@ -22,17 +20,11 @@ class BottomNavy extends StatefulWidget {
 class _BottomNavyState extends State<BottomNavy> {
   int _currentIndex = 0;
   PageController? _pageController;
-  final UserController userController = Get.put(UserController());
-  final ProductsController productsController = Get.put(ProductsController());
-
   @override
   void initState() {
     super.initState();
-    userController.getUser();
-    productsController.getAuthUserProducts();
-    productsController.getAllProducts();
-    productsController.getRecentProducts();
-    _pageController = PageController();
+    _pageController =
+        PageController(initialPage: widget.page == null ? 0 : widget.page!);
   }
 
   @override
@@ -119,7 +111,9 @@ class _BottomNavyState extends State<BottomNavy> {
                   child: SvgPicture.asset(
                     'assets/icons/home_filled.svg',
                     colorFilter: ColorFilter.mode(
-                      _currentIndex == 0 ? kPrimaryColor : kDarkColor,
+                      (_currentIndex == 0 || widget.page == 0)
+                          ? kPrimaryColor
+                          : kDarkColor,
                       BlendMode.srcIn,
                     ),
                     height: constraints.maxWidth < 768 ? 20 : 30,
@@ -144,7 +138,9 @@ class _BottomNavyState extends State<BottomNavy> {
                   child: SvgPicture.asset(
                     'assets/icons/discover_filled.svg',
                     colorFilter: ColorFilter.mode(
-                      _currentIndex == 1 ? kPrimaryColor : kDarkColor,
+                      (_currentIndex == 1 || widget.page == 1)
+                          ? kPrimaryColor
+                          : kDarkColor,
                       BlendMode.srcIn,
                     ),
                     height: constraints.maxWidth < 768 ? 20 : 30,
@@ -169,7 +165,9 @@ class _BottomNavyState extends State<BottomNavy> {
                   child: SvgPicture.asset(
                     'assets/icons/recipes_filled.svg',
                     colorFilter: ColorFilter.mode(
-                      _currentIndex == 2 ? kPrimaryColor : kDarkColor,
+                      (_currentIndex == 2 || widget.page == 2)
+                          ? kPrimaryColor
+                          : kDarkColor,
                       BlendMode.srcIn,
                     ),
                     height: constraints.maxWidth < 768 ? 20 : 30,
@@ -194,7 +192,9 @@ class _BottomNavyState extends State<BottomNavy> {
                   child: SvgPicture.asset(
                     'assets/icons/profile_filled.svg',
                     colorFilter: ColorFilter.mode(
-                      _currentIndex == 3 ? kPrimaryColor : kDarkColor,
+                      (_currentIndex == 3 || widget.page == 3)
+                          ? kPrimaryColor
+                          : kDarkColor,
                       BlendMode.srcIn,
                     ),
                     height: constraints.maxWidth < 768 ? 20 : 30,

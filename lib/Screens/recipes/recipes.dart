@@ -1,9 +1,14 @@
+import 'package:aby_eatery/components/empty_widget.dart';
+import 'package:aby_eatery/controllers/products_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../../constants.dart';
+import '../../services/constants.dart';
+import '../home/product_detail.dart';
 import 'components/recipe_product_card.dart';
 
 class MyRecipes extends StatefulWidget {
@@ -15,6 +20,7 @@ class MyRecipes extends StatefulWidget {
 
 class _MyRecipesState extends State<MyRecipes> with TickerProviderStateMixin {
   late TabController _tabController;
+  final ProductsController productsController = Get.find();
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
@@ -29,6 +35,9 @@ class _MyRecipesState extends State<MyRecipes> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final draftProducts = productsController.userDraftProducts.value.value;
+    final publishedProducts =
+        productsController.userPublishedProducts.value.value;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -62,14 +71,18 @@ class _MyRecipesState extends State<MyRecipes> with TickerProviderStateMixin {
                 borderSide: BorderSide(width: 4.0, color: kPrimaryColor),
               ),
               unselectedLabelStyle: const TextStyle(fontFamily: 'Okine'),
-              tabs: const [
+              tabs: [
                 Text(
-                  'Draft (10)',
-                  style: TextStyle(fontSize: 17),
+                  draftProducts != null
+                      ? 'Draft (${draftProducts.total})'
+                      : 'Draft',
+                  style: const TextStyle(fontSize: 17),
                 ),
                 Text(
-                  'Publish (15)',
-                  style: TextStyle(fontSize: 17),
+                  publishedProducts != null
+                      ? 'Publish (${publishedProducts.total})'
+                      : 'Published',
+                  style: const TextStyle(fontSize: 17),
                 ),
               ],
             ),
@@ -77,53 +90,81 @@ class _MyRecipesState extends State<MyRecipes> with TickerProviderStateMixin {
               child: TabBarView(
                 controller: _tabController,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10, right: 5),
-                    child: MasonryGridView.count(
-                      padding: const EdgeInsets.all(0),
-                      crossAxisCount: 2,
-                      itemCount: 5,
-                      crossAxisSpacing: 10,
-                      shrinkWrap: true,
-                      mainAxisSpacing: 0,
-                      itemBuilder: (context, index) {
-                        return InkWell(
-                          onTap: () {
-                            // Get.to(() => const ProductDetailScreen());
-                          },
-                          child: const RecipeProductCard(
-                            title: 'Original Wasawasa Recipe',
-                            productImage:
-                                'https://images.unsplash.com/photo-1482049016688-2d3e1b311543?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fGZvb2R8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60',
-                          ),
-                        );
-                      },
-                    ),
-                  ),
+                  draftProducts == null
+                      ? const Center(
+                          child: EmptyWidget(),
+                        )
+                      : draftProducts.documents.isEmpty
+                          ? const Center(
+                              child: EmptyWidget(),
+                            )
+                          : Padding(
+                              padding: const EdgeInsets.only(top: 10, right: 5),
+                              child: MasonryGridView.count(
+                                padding: const EdgeInsets.all(0),
+                                crossAxisCount: 2,
+                                itemCount: draftProducts.documents.length,
+                                crossAxisSpacing: 10,
+                                shrinkWrap: true,
+                                mainAxisSpacing: 0,
+                                itemBuilder: (context, index) {
+                                  return InkWell(
+                                    onTap: () {
+                                      Get.to(() => ProductDetailScreen(
+                                            product:
+                                                draftProducts.documents[index],
+                                          ));
+                                    },
+                                    child: RecipeProductCard(
+                                      id: draftProducts.documents[index].$id,
+                                      title: draftProducts
+                                          .documents[index].data['name'],
+                                      productImage:
+                                          'https://$endPoint/storage/buckets/$productPicturesBucket/files/${draftProducts.documents[index].data['images'][0]}/view?project=$projectId',
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
                   // ------------------------TAB------------------------------
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: MasonryGridView.count(
-                      padding: const EdgeInsets.all(0),
-                      crossAxisCount: 2,
-                      itemCount: 5,
-                      crossAxisSpacing: 10,
-                      shrinkWrap: true,
-                      mainAxisSpacing: 0,
-                      itemBuilder: (context, index) {
-                        return InkWell(
-                          onTap: () {
-                            // Get.to(() => const ProductDetailScreen());
-                          },
-                          child: const RecipeProductCard(
-                            title: 'Original Wasawasa Recipe',
-                            productImage:
-                                'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Zm9vZHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60',
-                          ),
-                        );
-                      },
-                    ),
-                  ),
+                  publishedProducts == null
+                      ? const Center(
+                          child: EmptyWidget(),
+                        )
+                      : publishedProducts.documents.isEmpty
+                          ? const Center(
+                              child: EmptyWidget(),
+                            )
+                          : Padding(
+                              padding: const EdgeInsets.only(top: 10),
+                              child: MasonryGridView.count(
+                                padding: const EdgeInsets.all(0),
+                                crossAxisCount: 2,
+                                itemCount: publishedProducts.documents.length,
+                                crossAxisSpacing: 10,
+                                shrinkWrap: true,
+                                mainAxisSpacing: 0,
+                                itemBuilder: (context, index) {
+                                  return InkWell(
+                                    onTap: () {
+                                      Get.to(() => ProductDetailScreen(
+                                            product: publishedProducts
+                                                .documents[index],
+                                          ));
+                                    },
+                                    child: RecipeProductCard(
+                                      id: publishedProducts
+                                          .documents[index].$id,
+                                      title: publishedProducts
+                                          .documents[index].data['name'],
+                                      productImage:
+                                          'https://$endPoint/storage/buckets/$productPicturesBucket/files/${publishedProducts.documents[index].data['images'][0]}/view?project=$projectId',
+                                      // 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Zm9vZHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60',
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
                 ],
               ),
             ),

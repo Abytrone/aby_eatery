@@ -1,14 +1,17 @@
+import 'package:aby_eatery/constants.dart';
+import 'package:aby_eatery/controllers/products_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-
-import '../../../constants.dart';
+import 'package:get/get.dart';
 
 class RecipeProductCard extends StatelessWidget {
   const RecipeProductCard({
     Key? key,
+    required this.id,
     required this.title,
     required this.productImage,
   }) : super(key: key);
+  final String id;
   final String title;
   final String productImage;
 
@@ -67,21 +70,62 @@ class RecipeProductCard extends StatelessWidget {
             Positioned(
               top: 5,
               right: 5,
-              child: IconButton(
-                icon: SvgPicture.asset(
-                  'assets/icons/pen.svg',
-                  colorFilter: const ColorFilter.mode(
-                    Colors.white,
-                    BlendMode.srcIn,
-                  ),
-                ),
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(kPrimaryColor),
-                ),
-                onPressed: () {},
-              ),
+              child: DropdownIconButton(id: id),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class DropdownIconButton extends StatelessWidget {
+  const DropdownIconButton({super.key, required this.id});
+  final String id;
+
+  @override
+  Widget build(BuildContext context) {
+    final ProductsController productsController = Get.find();
+    return PopupMenuButton<String>(
+      position: PopupMenuPosition.under,
+      itemBuilder: (BuildContext context) {
+        return <PopupMenuEntry<String>>[
+          const PopupMenuItem<String>(
+            value: 'Edit',
+            child: Text('Edit'),
+          ),
+          const PopupMenuItem<String>(
+            value: 'Publish',
+            child: Text('Publish'),
+          ),
+          const PopupMenuItem<String>(
+            value: 'Delete',
+            child: Text(
+              'Delete',
+              style: TextStyle(color: kErrorColor),
+            ),
+          ),
+        ];
+      },
+      onSelected: (String value) {
+        // Handle the selected item
+        // print('Selected: $value');
+        if (value == 'Delete') {
+          productsController.deleteProduct(id: id);
+        }
+      },
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: const BoxDecoration(
+          color: kPrimaryColor,
+          shape: BoxShape.circle,
+        ),
+        child: SvgPicture.asset(
+          'assets/icons/pen.svg',
+          colorFilter: const ColorFilter.mode(
+            Colors.white,
+            BlendMode.srcIn,
+          ),
         ),
       ),
     );

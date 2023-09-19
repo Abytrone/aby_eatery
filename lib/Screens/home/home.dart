@@ -1,4 +1,6 @@
 import 'package:aby_eatery/Screens/home/product_detail.dart';
+import 'package:aby_eatery/components/empty_widget.dart';
+import 'package:aby_eatery/services/local_service.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -22,12 +24,13 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final List<String> imageList = [
-    'http://localhost/v1/storage/buckets/64497203b2fc22dae964/files/644ebf264569e061bc46/view?project=6435978f59cab443127d&mode=admin',
-    'http://localhost/v1/storage/buckets/64497203b2fc22dae964/files/644ebf264569e061bc46/view?project=6435978f59cab443127d&mode=admin',
-    'http://localhost/v1/storage/buckets/64497203b2fc22dae964/files/644ebf264569e061bc46/view?project=6435978f59cab443127d&mode=admin',
+    'https://plus.unsplash.com/premium_photo-1673108852141-e8c3c22a4a22?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80',
+    'https://plus.unsplash.com/premium_photo-1673108852141-e8c3c22a4a22?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80',
+    'https://plus.unsplash.com/premium_photo-1673108852141-e8c3c22a4a22?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80',
   ];
 
-  final ProductsController productsController = Get.find<ProductsController>();
+  final ProductsController productsController = Get.find();
+  final AbyServices abyServices = AbyServices();
   @override
   void initState() {
     super.initState();
@@ -101,165 +104,85 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   const TitleText(text: 'Recent Recipes', showButton: true),
-                  Obx(() =>
-                      productsController.recentDiets!.value.products == null
-                          ? const Center(child: CircularProgressIndicator())
+                  Obx(() => productsController.loadingRecents.isTrue
+                      ? Center(child: abyServices.loading())
+                      : productsController.recentDiets.value.value == null
+                          ? const Center(child: EmptyWidget())
                           : SizedBox(
                               height: 260,
                               child: ListView.builder(
-                                itemCount: productsController.recentDiets!.value
-                                    .products!.documents.length,
+                                itemCount: productsController.recentDiets.value
+                                    .value!.products!.documents.length,
                                 scrollDirection: Axis.horizontal,
                                 itemBuilder: (context, index) {
+                                  final user = productsController
+                                      .recentDiets.value.value!.user;
+                                  final product = productsController
+                                      .recentDiets.value.value!.products;
                                   return Padding(
                                     padding: const EdgeInsets.only(right: 10),
                                     child: InkWell(
                                       onTap: () {
                                         Get.to(
                                           () => ProductDetailScreen(
-                                            product: productsController
-                                                .recentDiets!
-                                                .value
-                                                .products!
-                                                .documents[index],
-                                            user: productsController
-                                                .recentDiets!
-                                                .value
-                                                .user!
-                                                .documents[0],
+                                            product: product.documents[index],
                                           ),
                                         );
                                       },
                                       child: ProductCard(
-                                        username: productsController
-                                            .recentDiets!
-                                            .value
-                                            .user!
-                                            .documents[0]
-                                            .data['name'],
+                                        username:
+                                            user!.documents[0].data['name'],
                                         userImage:
-                                            'http://$endPoint/storage/buckets/$profilePicturesBucket/files/${productsController.recentDiets!.value.user!.documents[0].data['image']}/view?project=$projectId',
-                                        title: productsController
-                                            .recentDiets!
-                                            .value
-                                            .products!
-                                            .documents[index]
-                                            .data['name'],
+                                            'https://$endPoint/storage/buckets/$profilePicturesBucket/files/${user.documents[0].data['image']}/view?project=$projectId',
+                                        title: product!
+                                            .documents[index].data['name'],
                                         productImage:
-                                            'http://$endPoint/storage/buckets/$productPicturesBucket/files/${productsController.recentDiets!.value.products!.documents[index].data['images'][0]}/view?project=$projectId',
+                                            'https://$endPoint/storage/buckets/$productPicturesBucket/files/${product.documents[index].data['images'][0]}/view?project=$projectId',
                                       ),
                                     ),
                                   );
                                 },
                               ),
                             )),
-                  // ValueListenableBuilder<Future<Diets?>>(
-                  //     valueListenable: valueNotifier!,
-                  //     builder: (context, value, child) {
-                  //       return FutureBuilder<Diets?>(
-                  //         future: value,
-                  //         builder: (context, snapshot) {
-                  //           if (snapshot.connectionState ==
-                  //               ConnectionState.waiting) {
-                  //             return const Center(
-                  //                 child: CircularProgressIndicator());
-                  //           } else if (snapshot.connectionState ==
-                  //               ConnectionState.done) {
-                  //             if (snapshot.hasData) {
-                  //               return SizedBox(
-                  //                 height: 260,
-                  //                 child: ListView.builder(
-                  //                   itemCount:
-                  //                       snapshot.data!.products!.documents.length,
-                  //                   scrollDirection: Axis.horizontal,
-                  //                   itemBuilder: (context, index) {
-                  //                     return Padding(
-                  //                       padding: const EdgeInsets.only(right: 10),
-                  //                       child: InkWell(
-                  //                         onTap: () {
-                  //                           Get.to(
-                  //                             () => ProductDetailScreen(
-                  //                               product: snapshot.data!.products!
-                  //                                   .documents[index],
-                  //                               user: snapshot
-                  //                                   .data!.user!.documents[0],
-                  //                             ),
-                  //                           );
-                  //                         },
-                  //                         child: ProductCard(
-                  //                           username: snapshot.data!.user!
-                  //                               .documents[0].data['name'],
-                  //                           userImage:
-                  //                               'http://$endPoint/storage/buckets/$profilePicturesBucket/files/${snapshot.data!.user!.documents[0].data['image']}/view?project=$projectId',
-                  //                           title: snapshot.data!.products!
-                  //                               .documents[index].data['name'],
-                  //                           productImage:
-                  //                               'http://$endPoint/storage/buckets/$productPicturesBucket/files/${snapshot.data!.products!.documents[index].data['images'][0]}/view?project=$projectId',
-                  //                         ),
-                  //                       ),
-                  //                     );
-                  //                   },
-                  //                 ),
-                  //               );
-                  //             } else {
-                  //               return const Center(child: Text('Empty'));
-                  //             }
-                  //           } else {
-                  //             return const Center(
-                  //                 child: Text('Some error occured'));
-                  //           }
-                  //         },
-                  //       );
-                  //     }),
                   const TitleText(text: 'Popular Recipes', showButton: true),
-                  Obx(() => productsController.diets!.value.products == null
-                      ? const Center(child: CircularProgressIndicator())
-                      // MasonryGridView.count(
-                      //     padding: const EdgeInsets.all(0),
-                      //     crossAxisCount: 2,
-                      //     itemCount: 5,
-                      //     crossAxisSpacing: 10,
-                      //     physics: const NeverScrollableScrollPhysics(),
-                      //     shrinkWrap: true,
-                      //     mainAxisSpacing: 0,
-                      //     itemBuilder: (context, index) {
-                      //       return const ProductShimmer();
-                      //     },
-                      //   )
-                      : MasonryGridView.count(
-                          padding: const EdgeInsets.all(0),
-                          crossAxisCount: 2,
-                          itemCount: productsController
-                              .diets!.value.products!.documents.length,
-                          crossAxisSpacing: 10,
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          mainAxisSpacing: 0,
-                          itemBuilder: (context, index) {
-                            return InkWell(
-                              onTap: () {
-                                Get.to(
-                                  () => ProductDetailScreen(
-                                    product: productsController.diets!.value
-                                        .products!.documents[index],
-                                    user: productsController
-                                        .diets!.value.user!.documents[0],
+                  Obx(() => productsController.loadingDiets.isTrue
+                      ? Center(child: abyServices.loading())
+                      : productsController.diets.value.value == null
+                          ? const Center(child: EmptyWidget())
+                          : MasonryGridView.count(
+                              padding: const EdgeInsets.all(0),
+                              crossAxisCount: 2,
+                              itemCount: productsController.diets.value.value!
+                                  .products!.documents.length,
+                              crossAxisSpacing: 10,
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              mainAxisSpacing: 0,
+                              itemBuilder: (context, index) {
+                                final user =
+                                    productsController.diets.value.value!.user;
+                                final products = productsController
+                                    .diets.value.value!.products;
+                                return InkWell(
+                                  onTap: () {
+                                    Get.to(
+                                      () => ProductDetailScreen(
+                                        product: products.documents[index],
+                                      ),
+                                    );
+                                  },
+                                  child: ProductCard(
+                                    username: user!.documents[0].data['name'],
+                                    userImage:
+                                        'https://$endPoint/storage/buckets/$profilePicturesBucket/files/${user.documents[0].data['image']}/view?project=$projectId',
+                                    title:
+                                        products!.documents[index].data['name'],
+                                    productImage:
+                                        'https://$endPoint/storage/buckets/$productPicturesBucket/files/${products.documents[index].data['images'][0]}/view?project=$projectId',
                                   ),
                                 );
                               },
-                              child: ProductCard(
-                                username: productsController.diets!.value.user!
-                                    .documents[0].data['name'],
-                                userImage:
-                                    'http://$endPoint/storage/buckets/$profilePicturesBucket/files/${productsController.diets!.value.user!.documents[0].data['image']}/view?project=$projectId',
-                                title: productsController.diets!.value.products!
-                                    .documents[index].data['name'],
-                                productImage:
-                                    'http://$endPoint/storage/buckets/$productPicturesBucket/files/${productsController.diets!.value.products!.documents[index].data['images'][0]}/view?project=$projectId',
-                              ),
-                            );
-                          },
-                        )),
+                            )),
                 ],
               ),
             ),

@@ -30,4 +30,10 @@ class UserController extends GetxController {
     };
     return result;
   }
+
+  @override
+  void onInit() {
+    getUser();
+    super.onInit();
+  }
 }

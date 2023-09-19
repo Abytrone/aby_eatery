@@ -1,6 +1,7 @@
 import 'dart:io';
 
-import 'package:appwrite/models.dart' as models;
+import 'package:aby_eatery/services/local_service.dart';
+import 'package:appwrite/models.dart' as model;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,8 +15,20 @@ import '../services/products_services.dart';
 class ProductsController extends GetxController {
   final ProductServices productServices = ProductServices();
 
-  Rx<Diets>? diets = Rx<Diets>(const Diets(products: null, user: null));
-  Future<Diets?> getAllProducts() async {
+  @override
+  void onInit() {
+    getAllProducts();
+    getRecentProducts();
+    getAuthUserProducts();
+    getAuthUserDraftProducts();
+    getAuthUserPublishedProducts();
+    super.onInit();
+  }
+
+  var loadingDiets = false.obs;
+  var diets = Rxn<Diets>().obs;
+  Future<bool> getAllProducts() async {
+    loadingDiets(true);
     final result = await productServices.getAllProducts();
     Diets? diet;
     for (var i = 0; i < result!.documents.length; i++) {
@@ -23,47 +36,139 @@ class ProductsController extends GetxController {
           userId: result.documents[i].data['userid']);
       diet = Diets(products: result, user: owner!);
     }
-    diets!.value = diet!;
-    update();
-    return diet;
+
+    if (diet != null) {
+      diets.value.value = diet;
+      loadingDiets(false);
+      return true;
+    } else {
+      loadingDiets(false);
+      return false;
+    }
   }
 
-  Rx<Diets>? recentDiets = Rx<Diets>(const Diets(products: null, user: null));
-  Future<Diets?> getRecentProducts() async {
+  var loadingRecents = false.obs;
+  var recentDiets = Rxn<Diets>().obs;
+  Future<bool> getRecentProducts() async {
+    loadingRecents(true);
     final result = await productServices.getRecentProducts();
     Diets? diet;
-    for (var i = 0; i < result!.documents.length; i++) {
-      final owner = await productServices.getProductOwner(
-          userId: result.documents[i].data['userid']);
-      diet = Diets(products: result, user: owner!);
+
+    if (result != null) {
+      for (var i = 0; i < result.documents.length; i++) {
+        final owner = await productServices.getProductOwner(
+            userId: result.documents[i].data['userid']);
+        diet = Diets(products: result, user: owner!);
+      }
+
+      if (diet != null) {
+        recentDiets.value.value = diet;
+        loadingRecents(false);
+        return true;
+      } else {
+        loadingRecents(false);
+        return false;
+      }
+    } else {
+      loadingRecents(false);
+      return false;
     }
-    recentDiets!.value = diet!;
-    update();
-    return diet;
   }
 
-  Rx<Diets>? searchDiets = Rx<Diets>(const Diets(products: null, user: null));
-  Future<Diets?> searchProducts({required String search}) async {
+  var searchDiets = Rxn<Diets>().obs;
+  var hasSearched = false.obs;
+  Future<bool> searchProucts({required String search}) async {
+    showDialog(
+      context: Get.overlayContext!,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return const LoadingDialog();
+      },
+    );
     final result = await productServices.searchProducts(search: search);
     Diets? diet;
-    for (var i = 0; i < result!.documents.length; i++) {
-      final owner = await productServices.getProductOwner(
-          userId: result.documents[i].data['userid']);
-      diet = Diets(products: result, user: owner!);
+    if (result != null) {
+      for (var i = 0; i < result.documents.length; i++) {
+        final owner = await productServices.getProductOwner(
+            userId: result.documents[i].data['userid']);
+        diet = Diets(products: result, user: owner!);
+      }
+
+      if (diet != null) {
+        searchDiets.value.value = diet;
+        hasSearched(true);
+        Navigator.of(Get.overlayContext!).pop();
+        return true;
+      } else {
+        Navigator.of(Get.overlayContext!).pop();
+        hasSearched(true);
+        return false;
+      }
+    } else {
+      Navigator.of(Get.overlayContext!).pop();
+      hasSearched(true);
+      return false;
     }
-    searchDiets!.value = diet!;
-    update();
-    return diet;
   }
 
-  var userProducts = {}.obs;
-  Future<models.DocumentList> getAuthUserProducts() async {
+  var userProducts = Rxn<model.DocumentList>().obs;
+  Future<bool> getAuthUserProducts() async {
     final result = await productServices.getAuthUserProducts();
-    userProducts.value = {
-      'products': result!.documents,
-      'total': result.total,
-    };
-    return result;
+
+    if (result != null) {
+      userProducts.value.value = result;
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  var userDraftProducts = Rxn<model.DocumentList>().obs;
+  Future<bool> getAuthUserDraftProducts() async {
+    final result = await productServices.getAuthUserProducts(status: '0');
+
+    if (result != null) {
+      userDraftProducts.value.value = result;
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  var userPublishedProducts = Rxn<model.DocumentList>().obs;
+  Future<bool> getAuthUserPublishedProducts() async {
+    final result = await productServices.getAuthUserProducts(status: '1');
+
+    if (result != null) {
+      userPublishedProducts.value.value = result;
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> deleteProduct({required String id}) async {
+    showDialog(
+      context: Get.overlayContext!,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return const LoadingDialog();
+      },
+    );
+    final result = await productServices.deleteProduct(id: id);
+
+    if (result == true) {
+      getAllProducts();
+      getAuthUserDraftProducts();
+      getAuthUserProducts();
+      getAuthUserPublishedProducts();
+      getRecentProducts();
+      Navigator.of(Get.overlayContext!).pop();
+      return true;
+    } else {
+      Navigator.of(Get.overlayContext!).pop();
+      return false;
+    }
   }
 
   Future<bool> createProduct({
@@ -104,6 +209,11 @@ class ProductsController extends GetxController {
             createdAt: createdAt,
           );
           if (result == true) {
+            getAllProducts();
+            getAuthUserDraftProducts();
+            getAuthUserProducts();
+            getAuthUserPublishedProducts();
+            getRecentProducts();
             Navigator.of(Get.context!).pop();
             Get.off(() => const BottomNavy(page: 2));
             return true;
@@ -173,14 +283,7 @@ class ProductsController extends GetxController {
       isFilePicked(false);
 
       // file picker fail
-      Get.snackbar(
-        'Error Message',
-        '$e',
-        snackPosition: SnackPosition.BOTTOM,
-        duration: const Duration(seconds: 5),
-        colorText: Colors.white,
-        backgroundColor: kErrorColor,
-      );
+      AbySnackBar.errorSnackbar(text: '$e');
       return false;
     }
   }

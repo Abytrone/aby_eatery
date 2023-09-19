@@ -44,8 +44,8 @@ class SettingsItem extends StatelessWidget {
                 ),
               ],
             ),
-            Row(
-              children: const [
+            const Row(
+              children: [
                 Icon(Iconsax.arrow_right_3),
               ],
             )

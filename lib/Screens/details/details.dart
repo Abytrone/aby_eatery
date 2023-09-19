@@ -54,9 +54,9 @@ class DetailsScreen extends StatelessWidget {
                   children: [
                     TitleBar(item: item),
                     const SizedBox(height: kDefaultPadding),
-                    Row(
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
+                      children: [
                         Text(
                           'Detail',
                           style: TextStyle(fontSize: 18),

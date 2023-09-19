@@ -45,6 +45,8 @@ dependencies:
   lottie: ^2.3.2
   file_picker: ^5.2.11
   shimmer: ^2.0.0
+  cached_network_image: ^3.2.3
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:

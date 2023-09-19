@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class AdsWidget extends StatelessWidget {
@@ -12,10 +13,13 @@ class AdsWidget extends StatelessWidget {
         borderRadius: const BorderRadius.all(
           Radius.circular(20),
         ),
-        child: FadeInImage.assetNetwork(
-          placeholder: 'assets/images/placeholder_landscape.png',
-          image: image,
+        child: CachedNetworkImage(
+          imageUrl: image,
           fit: BoxFit.cover,
+          placeholder: (context, url) =>
+              Image.asset('assets/images/placeholder_landscape.png'),
+          errorWidget: (context, url, error) =>
+              Image.asset('assets/images/placeholder_landscape.png'),
         ),
       ),
     );

@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.aby_eatery">
+    package="com.dwindlr.aby_eatery">
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="aby_eatery"
         android:name="${applicationName}"

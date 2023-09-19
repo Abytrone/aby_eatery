@@ -1,7 +1,7 @@
-const String endPoint = 'localhost/v1';
-const String projectId = '6435978f59cab443127d';
+const String endPoint = 'cloud.appwrite.io/v1';
+const String projectId = '646a7e8ad278150d5bd7';
 
-const String databaseId = '644a92e51dd6283e15f5';
+const String databaseId = '64bd1fbca45f40fdcdda';
 
 // collections / tables
 const String usersCollectionId = '644a92ef94d357bf43e4';

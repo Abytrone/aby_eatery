@@ -16,7 +16,7 @@ class CreateRecipeScreen extends StatefulWidget {
 }
 
 class _CreateRecipeScreenState extends State<CreateRecipeScreen> {
-  final ProductsController productsController = ProductsController();
+  final ProductsController productsController = Get.find();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   final TextEditingController name = TextEditingController();

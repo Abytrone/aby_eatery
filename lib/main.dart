@@ -7,6 +7,7 @@ import 'Screens/auth/login.dart';
 import 'Screens/auth/signup.dart';
 import 'Screens/discover/discover.dart';
 import 'Screens/welcome.dart';
+import 'bindings/controller_bindings.dart';
 import 'components/bottom_navy.dart';
 import 'components/splash_screen.dart';
 import 'components/theme.dart';
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Aby Eatery',
+      initialBinding: ControllerBindings(),
       debugShowCheckedModeBanner: false,
       theme: lightThemeData(context),
       // darkTheme: darkThemeData(context),

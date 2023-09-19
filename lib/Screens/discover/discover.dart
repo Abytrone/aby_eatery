@@ -1,10 +1,10 @@
+import 'package:aby_eatery/components/empty_widget.dart';
 import 'package:aby_eatery/controllers/products_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
-import '../../Models/diets_model.dart';
 import '../../components/app_bar.dart';
 import '../../constants.dart';
 import '../../services/constants.dart';
@@ -21,8 +21,13 @@ class DiscoverScreen extends StatefulWidget {
 }
 
 class _DiscoverScreenState extends State<DiscoverScreen> {
-  final ProductsController productsController = Get.find<ProductsController>();
-  final TextEditingController search = TextEditingController();
+  final ProductsController productsController = Get.find();
+  @override
+  void initState() {
+    productsController.hasSearched(false);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,61 +50,60 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              children: [
-                SearchBox(controller: search),
-                FutureBuilder<Diets?>(
-                  future:
-                      productsController.searchProducts(search: search.text),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else if (snapshot.connectionState ==
-                        ConnectionState.done) {
-                      if (snapshot.hasData) {
-                        return MasonryGridView.count(
+            child: Obx(
+              () => Column(
+                children: [
+                  const SearchBox(),
+                  productsController.searchDiets.value.value == null &&
+                          productsController.hasSearched.isFalse
+                      ? const Center(
+                          child: Text('Enter something to search!'),
+                        )
+                      : const SizedBox.shrink(),
+                  productsController.searchDiets.value.value == null &&
+                          productsController.hasSearched.isTrue
+                      ? const Center(
+                          child: EmptyWidget(),
+                        )
+                      : const SizedBox.shrink(),
+                  productsController.searchDiets.value.value == null
+                      ? const SizedBox.shrink()
+                      : MasonryGridView.count(
                           padding: const EdgeInsets.all(0),
                           crossAxisCount: 2,
-                          itemCount: snapshot.data!.products!.documents.length,
+                          itemCount: productsController.searchDiets.value.value!
+                              .products!.documents.length,
                           crossAxisSpacing: 10,
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           mainAxisSpacing: 0,
                           itemBuilder: (context, index) {
+                            final searchedProducts =
+                                productsController.searchDiets.value.value;
                             return InkWell(
                               onTap: () {
                                 Get.to(
                                   () => ProductDetailScreen(
-                                    product: snapshot
-                                        .data!.products!.documents[index],
-                                    user: snapshot.data!.user!.documents[0],
+                                    product: searchedProducts
+                                        .products!.documents[index],
                                   ),
                                 );
                               },
                               child: ProductCard(
-                                username: snapshot
-                                    .data!.user!.documents[0].data['name'],
+                                username: searchedProducts!
+                                    .user!.documents[0].data['name'],
                                 userImage:
-                                    'http://$endPoint/storage/buckets/$profilePicturesBucket/files/${snapshot.data!.user!.documents[0].data['image']}/view?project=$projectId',
-                                title: snapshot.data!.products!.documents[index]
-                                    .data['name'],
+                                    'https://$endPoint/storage/buckets/$profilePicturesBucket/files/${searchedProducts.user!.documents[0].data['image']}/view?project=$projectId',
+                                title: searchedProducts
+                                    .products!.documents[index].data['name'],
                                 productImage:
-                                    'http://$endPoint/storage/buckets/$productPicturesBucket/files/${snapshot.data!.products!.documents[index].data['images'][0]}/view?project=$projectId',
+                                    'https://$endPoint/storage/buckets/$productPicturesBucket/files/${searchedProducts.products!.documents[index].data['images'][0]}/view?project=$projectId',
                               ),
                             );
                           },
-                        );
-                      } else {
-                        return const Center(
-                          child: Text('Enter something to search'),
-                        );
-                      }
-                    } else {
-                      return const Center(child: Text('Error occured'));
-                    }
-                  },
-                ),
-              ],
+                        )
+                ],
+              ),
             ),
           ),
           Visibility(

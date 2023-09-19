@@ -12,12 +12,15 @@ import 'components/social_button.dart';
 
 class SignupScreen extends StatelessWidget {
   SignupScreen({Key? key}) : super(key: key);
+  final AuthServices authServices = AuthServices();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController name = TextEditingController();
   final TextEditingController email = TextEditingController();
   final TextEditingController password = TextEditingController();
-  final AuthServices authServices = AuthServices();
+  final TextEditingController confirmPassword = TextEditingController();
+
   final obsecure = true.obs;
+  final confirmObsecure = true.obs;
 
   @override
   Widget build(BuildContext context) {
@@ -126,6 +129,34 @@ class SignupScreen extends StatelessWidget {
                                     icon: const Icon(Iconsax.eye),
                                   ),
                           ),
+                          const SizedBox(height: 20),
+                          AuthInputField(
+                            controller: confirmPassword,
+                            labelText: 'Confirm Password',
+                            hintText: 'Enter your confirm password',
+                            obscureText: confirmObsecure.value,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return '* Required';
+                              } else if (password.text != value) {
+                                return '* Password do not match';
+                              }
+                              return null;
+                            },
+                            suffixIcon: confirmObsecure.value
+                                ? IconButton(
+                                    onPressed: () {
+                                      confirmObsecure(false);
+                                    },
+                                    icon: const Icon(Iconsax.eye_slash),
+                                  )
+                                : IconButton(
+                                    onPressed: () {
+                                      confirmObsecure(true);
+                                    },
+                                    icon: const Icon(Iconsax.eye),
+                                  ),
+                          ),
                           authServices.loading.isFalse
                               ? PrimaryButton(
                                   labelText: 'Sign up',
@@ -145,7 +176,7 @@ class SignupScreen extends StatelessWidget {
                                 ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
-                                vertical: 50, horizontal: 20),
+                                vertical: 30, horizontal: 20),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -172,13 +203,13 @@ class SignupScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 20),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 5, horizontal: 20),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               crossAxisAlignment: CrossAxisAlignment.center,
-                              children: const [
+                              children: [
                                 SocialButton(icon: 'assets/icons/google.svg'),
                                 SocialButton(icon: 'assets/icons/apple.svg'),
                                 SocialButton(icon: 'assets/icons/facebook.svg'),
@@ -186,7 +217,7 @@ class SignupScreen extends StatelessWidget {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(top: 30),
+                            padding: const EdgeInsets.only(top: 20),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [

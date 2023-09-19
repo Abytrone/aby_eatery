@@ -24,16 +24,22 @@ class PersonalInfo extends StatelessWidget {
               height: 80,
               width: 80,
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(60),
-                child: FadeInImage.assetNetwork(
-                  placeholder: 'assets/images/placeholder_landscape.png',
-                  image:
-                      // ignore: invalid_use_of_protected_member
-                      'http://$endPoint/storage/buckets/$profilePicturesBucket/files/${userController.user.value['image']}/view?project=$projectId',
-                  fit: BoxFit.cover,
-                  placeholderFit: BoxFit.cover,
-                ),
-              ),
+                  borderRadius: BorderRadius.circular(60),
+                  // ignore: invalid_use_of_protected_member
+                  child: userController.user.value['image'] == null
+                      ? FadeInImage.assetNetwork(
+                          placeholder:
+                              'assets/images/placeholder_landscape.png',
+                          image:
+                              // ignore: invalid_use_of_protected_member
+                              'https://$endPoint/storage/buckets/$profilePicturesBucket/files/${userController.user.value['image']}/view?project=$projectId',
+                          fit: BoxFit.cover,
+                          placeholderFit: BoxFit.cover,
+                        )
+                      : Image.asset(
+                          'assets/images/placeholder_landscape.png',
+                          fit: BoxFit.cover,
+                        )),
             ),
             const SizedBox(width: 10),
             Column(
@@ -42,19 +48,22 @@ class PersonalInfo extends StatelessWidget {
                 Text(
                   // ignore: invalid_use_of_protected_member
                   userController.user.value['name'],
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleLarge!
-                      .copyWith(fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 Row(
                   children: [
-                    Text(
-                      // ignore: invalid_use_of_protected_member
-                      userController.user.value['email'],
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: kDarkColor.withOpacity(.5),
+                    SizedBox(
+                      width: 100,
+                      child: Text(
+                        // ignore: invalid_use_of_protected_member
+                        userController.user.value['email'],
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: kDarkColor.withOpacity(.5),
+                        ),
                       ),
                     ),
                     Visibility(
@@ -95,8 +104,8 @@ class PersonalInfo extends StatelessWidget {
               ),
             ),
           ),
-          child: Row(
-            children: const [
+          child: const Row(
+            children: [
               Icon(Iconsax.edit, size: 20),
               SizedBox(width: 10),
               Text('Edit'),

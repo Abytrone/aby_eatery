@@ -1,6 +1,10 @@
+import 'package:aby_eatery/components/empty_widget.dart';
+import 'package:aby_eatery/controllers/comments_controller.dart';
 import 'package:appwrite/models.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 
 import '../../constants.dart';
 import '../../services/constants.dart';
@@ -15,13 +19,9 @@ import 'components/product_card.dart';
 import 'components/title_text.dart';
 
 class ProductDetailScreen extends StatefulWidget {
-  const ProductDetailScreen({
-    Key? key,
-    required this.product,
-    required this.user,
-  }) : super(key: key);
+  const ProductDetailScreen({Key? key, required this.product})
+      : super(key: key);
   final Document product;
-  final Document? user;
 
   @override
   State<ProductDetailScreen> createState() => _ProductDetailScreenState();
@@ -31,6 +31,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   int _current = 0;
   final CarouselController _controller = CarouselController();
   final List<String> imgList = [];
+  final CommentController commentController = Get.find();
 
   @override
   void initState() {
@@ -39,6 +40,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       imgList.add(widget.product.data['images'][i]);
     }
     // }
+    commentController.getComments(dietid: widget.product.$id);
     super.initState();
   }
 
@@ -64,7 +66,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 placeholder:
                                     'assets/images/placeholder_landscape.png',
                                 image:
-                                    'http://$endPoint/storage/buckets/$productPicturesBucket/files/$item/view?project=$projectId',
+                                    'https://$endPoint/storage/buckets/$productPicturesBucket/files/$item/view?project=$projectId',
                                 fit: BoxFit.cover,
                               ),
                               Positioned.fill(
@@ -248,20 +250,38 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     padding: EdgeInsets.symmetric(horizontal: 20),
                     child: TitleText(text: 'Comments', showButton: true),
                   ),
+                  Obx(() => Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: commentController.loading.isTrue
+                            ? Lottie.asset(
+                                'assets/animations/95944-loading-animation.json',
+                                repeat: true,
+                              )
+                            : commentController.comments.value.value == null
+                                ? const Center(child: EmptyWidget())
+                                : ListView.builder(
+                                    itemCount: commentController.comments.value
+                                        .value!.comment.documents.length,
+                                    shrinkWrap: true,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    itemBuilder: (context, index) {
+                                      final comment = commentController
+                                          .comments.value.value!.comment;
+                                      final user = commentController
+                                          .comments.value.value!.user;
+                                      return CommentItem(
+                                        comment: comment.documents[index],
+                                        user: user.documents[0],
+                                      );
+                                    },
+                                  ),
+                      )),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: ListView.builder(
-                      itemCount: 5,
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        return const CommentItem();
-                      },
+                    child: CommentBox(
+                      dietId: widget.product.$id,
                     ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: CommentBox(),
                   ),
                 ],
               ),
@@ -289,7 +309,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           child: ProductCard(
                             username: 'Rayaan Yahaya',
                             userImage:
-                                'http://localhost/v1/storage/buckets/64497203b2fc22dae964/files/644e6868b76f9b1fd527/view?project=6435978f59cab443127d&mode=admin',
+                                'https://cloud.appwrite.io/v1/storage/buckets/644ef4f24ccfdc5336f8/files/64bd357b3edd3e051892/view?project=646a7e8ad278150d5bd7&mode=admin',
                             title: 'Original Wasawasa Recipe',
                             productImage:
                                 'https://images.unsplash.com/photo-1482049016688-2d3e1b311543?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fGZvb2R8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60',

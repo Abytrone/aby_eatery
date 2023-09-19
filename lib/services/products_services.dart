@@ -1,9 +1,7 @@
+import 'package:aby_eatery/services/local_service.dart';
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart' as model;
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
-import '../constants.dart';
 import 'appwrite_server.dart';
 import 'constants.dart';
 
@@ -12,26 +10,26 @@ class ProductServices {
   final Storage storage = Storage(AppwriteServer.client);
   final Databases databases = Databases(AppwriteServer.client);
 
-  Future<model.DocumentList?> getAuthUserProducts() async {
+  Future<model.DocumentList?> getAuthUserProducts({String? status}) async {
     try {
       final currentUser = await account.get();
       final result = await databases.listDocuments(
         databaseId: databaseId,
         collectionId: dietsCollectionId, // diets
-        queries: [Query.search('userid', currentUser.$id)],
+        queries: [
+          Query.search('userid', currentUser.$id),
+          status == null
+              ? Query.notEqual('status', '2')
+              : Query.equal('status', status),
+        ],
       );
-      // print(result.documents);
+      // if (result.documents.isNotEmpty) {
+      //   print(result.documents[0].data);
+      // }
       return result;
     } on AppwriteException catch (e) {
       // print(e.message);
-      Get.snackbar(
-        'Error Message (${e.code})',
-        e.message!,
-        snackPosition: SnackPosition.BOTTOM,
-        duration: const Duration(seconds: 5),
-        colorText: Colors.white,
-        backgroundColor: kErrorColor,
-      );
+      AbySnackBar.errorSnackbar(text: '${e.message}');
       return null;
     }
   }
@@ -47,14 +45,7 @@ class ProductServices {
       return result;
     } on AppwriteException catch (e) {
       // print(e.message);
-      Get.snackbar(
-        'Error Message (${e.code})',
-        e.message!,
-        snackPosition: SnackPosition.BOTTOM,
-        duration: const Duration(seconds: 5),
-        colorText: Colors.white,
-        backgroundColor: kErrorColor,
-      );
+      AbySnackBar.errorSnackbar(text: '${e.message}');
       return null;
     }
   }
@@ -64,19 +55,13 @@ class ProductServices {
       final result = await databases.listDocuments(
         databaseId: databaseId,
         collectionId: dietsCollectionId, // diets
+        queries: [Query.equal('status', '1')],
       );
       // print(result.documents);
       return result;
     } on AppwriteException catch (e) {
       // print(e.message);
-      Get.snackbar(
-        'Error Message (${e.code})',
-        e.message!,
-        snackPosition: SnackPosition.BOTTOM,
-        duration: const Duration(seconds: 5),
-        colorText: Colors.white,
-        backgroundColor: kErrorColor,
-      );
+      AbySnackBar.errorSnackbar(text: '${e.message}');
       return null;
     }
   }
@@ -88,6 +73,7 @@ class ProductServices {
         collectionId: dietsCollectionId, // diets
         queries: [
           Query.orderDesc('name'),
+          Query.equal('status', '1'),
           Query.limit(5),
         ],
       );
@@ -95,14 +81,7 @@ class ProductServices {
       return result;
     } on AppwriteException catch (e) {
       // print(e.message);
-      Get.snackbar(
-        'Error Message (${e.code})',
-        e.message!,
-        snackPosition: SnackPosition.BOTTOM,
-        duration: const Duration(seconds: 5),
-        colorText: Colors.white,
-        backgroundColor: kErrorColor,
-      );
+      AbySnackBar.errorSnackbar(text: '${e.message}');
       return null;
     }
   }
@@ -114,20 +93,14 @@ class ProductServices {
         collectionId: dietsCollectionId, // diets
         queries: [
           Query.search('name', search),
+          Query.equal('status', '1'),
         ],
       );
       // print(result.documents);
       return result;
     } on AppwriteException catch (e) {
       // print(e.message);
-      Get.snackbar(
-        'Error Message (${e.code})',
-        e.message!,
-        snackPosition: SnackPosition.BOTTOM,
-        duration: const Duration(seconds: 5),
-        colorText: Colors.white,
-        backgroundColor: kErrorColor,
-      );
+      AbySnackBar.errorSnackbar(text: '${e.message}');
       return null;
     }
   }
@@ -139,9 +112,8 @@ class ProductServices {
         fileId: ID.unique(),
         file: InputFile.fromPath(path: path),
       );
-      // print(result.$id);
       return result.$id;
-    } on AppwriteException catch (e) {
+    } on AppwriteException {
       // print(e);
       return null;
     }
@@ -155,8 +127,24 @@ class ProductServices {
       );
       // print('File deleted');
       return true;
+    } on AppwriteException {
+      // print(e);
+      return false;
+    }
+  }
+
+  Future<bool> deleteProduct({required String id}) async {
+    try {
+      await databases.deleteDocument(
+        databaseId: databaseId,
+        collectionId: dietsCollectionId,
+        documentId: id,
+      );
+      // print(result);
+      return true;
     } on AppwriteException catch (e) {
       // print(e);
+      AbySnackBar.errorSnackbar(text: '${e.message}');
       return false;
     }
   }
@@ -186,31 +174,18 @@ class ProductServices {
           'nutrition': nutrition,
           'ingredients': ingredients,
           'instructions': instructions,
-          'status': status,
+          'status': status.toString(),
           // 'categoryid': categoryId,
           // 'created_at': createdAt,
         },
       );
-      Get.snackbar(
-        'Success Message',
-        'You have successfully uploaded a product',
-        snackPosition: SnackPosition.BOTTOM,
-        duration: const Duration(seconds: 5),
-        colorText: Colors.white,
-        backgroundColor: kPrimaryColor,
-      );
+      AbySnackBar.successSnackbar(
+          text: 'You have successfully uploaded a product');
       // print(result.documents);
       return true;
     } on AppwriteException catch (e) {
       // print(e.message);
-      Get.snackbar(
-        'Error Message (${e.code})',
-        e.message!,
-        snackPosition: SnackPosition.BOTTOM,
-        duration: const Duration(seconds: 5),
-        colorText: Colors.white,
-        backgroundColor: kErrorColor,
-      );
+      AbySnackBar.errorSnackbar(text: '${e.message}');
       return false;
     }
   }
@@ -246,26 +221,13 @@ class ProductServices {
           // 'created_at': createdAt,
         },
       );
-      Get.snackbar(
-        'Success Message',
-        'You have successfully uploaded a product',
-        snackPosition: SnackPosition.BOTTOM,
-        duration: const Duration(seconds: 5),
-        colorText: Colors.white,
-        backgroundColor: kPrimaryColor,
-      );
+      AbySnackBar.successSnackbar(
+          text: 'You have successfully uploaded a product');
       // print(result.documents);
       return true;
     } on AppwriteException catch (e) {
       // print(e.message);
-      Get.snackbar(
-        'Error Message (${e.code})',
-        e.message!,
-        snackPosition: SnackPosition.BOTTOM,
-        duration: const Duration(seconds: 5),
-        colorText: Colors.white,
-        backgroundColor: kErrorColor,
-      );
+      AbySnackBar.errorSnackbar(text: '${e.message}');
       return false;
     }
   }

@@ -172,13 +172,13 @@ class LoginScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
+                          const Padding(
+                            padding: EdgeInsets.symmetric(
                                 vertical: 10, horizontal: 20),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               crossAxisAlignment: CrossAxisAlignment.center,
-                              children: const [
+                              children: [
                                 SocialButton(icon: 'assets/icons/google.svg'),
                                 SocialButton(icon: 'assets/icons/apple.svg'),
                                 SocialButton(icon: 'assets/icons/facebook.svg'),
