@@ -1,3 +1,4 @@
+import 'package:aby_eatery/Screens/profile/edit_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -24,30 +25,29 @@ class PersonalInfo extends StatelessWidget {
               height: 80,
               width: 80,
               child: ClipRRect(
-                  borderRadius: BorderRadius.circular(60),
-                  // ignore: invalid_use_of_protected_member
-                  child: userController.user.value['image'] == null
-                      ? FadeInImage.assetNetwork(
-                          placeholder:
-                              'assets/images/placeholder_landscape.png',
-                          image:
-                              // ignore: invalid_use_of_protected_member
-                              'https://$endPoint/storage/buckets/$profilePicturesBucket/files/${userController.user.value['image']}/view?project=$projectId',
-                          fit: BoxFit.cover,
-                          placeholderFit: BoxFit.cover,
-                        )
-                      : Image.asset(
-                          'assets/images/placeholder_landscape.png',
-                          fit: BoxFit.cover,
-                        )),
+                borderRadius: BorderRadius.circular(60),
+                child: userController
+                            .user.value.value!.prefs.data['profilePicture'] !=
+                        null
+                    ? FadeInImage.assetNetwork(
+                        placeholder: 'assets/images/placeholder_landscape.png',
+                        image:
+                            'https://$endPoint/storage/buckets/$profilePicturesBucket/files/${userController.user.value.value!.prefs.data['profilePicture']}/view?project=$projectId',
+                        fit: BoxFit.cover,
+                        placeholderFit: BoxFit.cover,
+                      )
+                    : Image.asset(
+                        'assets/images/placeholder_landscape.png',
+                        fit: BoxFit.cover,
+                      ),
+              ),
             ),
             const SizedBox(width: 10),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  // ignore: invalid_use_of_protected_member
-                  userController.user.value['name'],
+                  userController.user.value.value!.name,
                   style: const TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.bold,
@@ -55,36 +55,32 @@ class PersonalInfo extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    SizedBox(
-                      width: 100,
-                      child: Text(
-                        // ignore: invalid_use_of_protected_member
-                        userController.user.value['email'],
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: kDarkColor.withOpacity(.5),
-                        ),
+                    Text(
+                      userController.user.value.value!.email,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: kDarkColor.withOpacity(.5),
                       ),
                     ),
-                    Visibility(
-                      // ignore: invalid_use_of_protected_member
-                      visible: userController.user.value['emailVerification'] ==
-                          false,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 2),
-                        decoration: BoxDecoration(
-                          color: kErrorColor.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: const Center(
-                          child: Text(
-                            'unverified',
-                            style: TextStyle(color: kErrorColor),
-                          ),
-                        ),
-                      ),
-                    ),
+                    // Visibility(
+                    //   visible:
+                    //       userController.user.value.value!.emailVerification ==
+                    //           false,
+                    //   child: Container(
+                    //     padding: const EdgeInsets.symmetric(
+                    //         horizontal: 10, vertical: 2),
+                    //     decoration: BoxDecoration(
+                    //       color: kErrorColor.withOpacity(0.1),
+                    //       borderRadius: BorderRadius.circular(5),
+                    //     ),
+                    //     child: const Center(
+                    //       child: Text(
+                    //         'unverified',
+                    //         style: TextStyle(color: kErrorColor),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               ],
@@ -92,7 +88,9 @@ class PersonalInfo extends StatelessWidget {
           ],
         ),
         TextButton(
-          onPressed: () {},
+          onPressed: () {
+            Get.to(() => const EditProfileScreen());
+          },
           style: ButtonStyle(
             padding: const MaterialStatePropertyAll(
                 EdgeInsets.symmetric(horizontal: 20)),

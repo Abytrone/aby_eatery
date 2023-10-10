@@ -71,17 +71,17 @@ class CommentItem extends StatelessWidget {
             ),
             Row(
               children: [
-                const Icon(
-                  Iconsax.heart,
-                ),
-                const SizedBox(width: 10),
-                Text(
-                  '356',
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        color: kDarkColor.withOpacity(0.7),
-                      ),
-                ),
-                const SizedBox(width: 30),
+                // const Icon(
+                //   Iconsax.heart,
+                // ),
+                // const SizedBox(width: 10),
+                // Text(
+                //   '356',
+                //   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                //         color: kDarkColor.withOpacity(0.7),
+                //       ),
+                // ),
+                // const SizedBox(width: 30),
                 TimeAgoWidget(targetTimeString: comment.$createdAt),
               ],
             )

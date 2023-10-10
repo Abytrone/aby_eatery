@@ -12,6 +12,7 @@ class AuthInputField extends StatelessWidget {
     this.labelText,
     this.hintText,
     this.textCapitalization,
+    this.keyboardType,
   }) : super(key: key);
   final TextEditingController? controller;
   final Widget? suffixIcon;
@@ -20,10 +21,12 @@ class AuthInputField extends StatelessWidget {
   final String? labelText;
   final String? hintText;
   final TextCapitalization? textCapitalization;
+  final TextInputType? keyboardType;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
+      keyboardType: keyboardType,
       textCapitalization: textCapitalization ?? TextCapitalization.none,
       decoration: InputDecoration(
         labelText: labelText,

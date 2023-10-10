@@ -28,6 +28,7 @@ class AuthServices {
         password: password,
         name: name,
       );
+
       Get.dialog(
         const StatusDialog(),
         barrierDismissible: false,
@@ -92,9 +93,24 @@ class AuthServices {
     }
   }
 
-  Future<model.Account> getUser() async {
-    final currentUser = account.get();
-    return currentUser;
+  Future<model.Account?> getUser() async {
+    try {
+      final currentUser = await account.get();
+      final prefs = await account.getPrefs();
+      if (prefs.data.isEmpty) {
+        await account.updatePrefs(
+          prefs: {
+            'address': 'Address not added yet!',
+            'description': 'Description not added yet!',
+            'role': 'user',
+          },
+        );
+      }
+      return currentUser;
+    } on AppwriteException {
+      // print(e);
+      return null;
+    }
   }
 
   Future<model.DocumentList?> getAuthUser() async {
@@ -111,6 +127,27 @@ class AuthServices {
       // print(e.message);
       AbySnackBar.errorSnackbar(text: 'Error Message (${e.message})');
       return null;
+    }
+  }
+
+  Future<bool> updateProfilePicture({required String path}) async {
+    try {
+      final result = await storage.createFile(
+        bucketId: profilePicturesBucket,
+        fileId: ID.unique(),
+        file: InputFile.fromPath(path: path),
+      );
+
+      await account.updatePrefs(prefs: {
+        "profilePicture": result.$id,
+      });
+      AbySnackBar.successSnackbar(
+          text: 'Profile picture updated successfully!');
+      return true;
+    } on AppwriteException {
+      // print(e);
+      AbySnackBar.errorSnackbar(text: 'Profile picture not updated!');
+      return false;
     }
   }
 }

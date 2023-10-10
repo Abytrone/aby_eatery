@@ -9,8 +9,10 @@ import 'Screens/discover/discover.dart';
 import 'Screens/welcome.dart';
 import 'bindings/controller_bindings.dart';
 import 'components/bottom_navy.dart';
+import 'components/no_internet.dart';
 import 'components/splash_screen.dart';
 import 'components/theme.dart';
+import 'components/user_bottom_navy.dart';
 
 void main() {
   runApp(const MyApp());
@@ -28,11 +30,13 @@ class MyApp extends StatelessWidget {
       // darkTheme: darkThemeData(context),
       home: const SplashScreen(),
       routes: <String, WidgetBuilder>{
+        'noInternet': (BuildContext context) => const NoInternetConnection(),
         'home': (BuildContext context) => const HomeScreen(),
         'welcome': (BuildContext context) => const WelcomeScreen(),
-        'login': (BuildContext context) => LoginScreen(),
-        'signup': (BuildContext context) => SignupScreen(),
+        'login': (BuildContext context) => const LoginScreen(),
+        'signup': (BuildContext context) => const SignupScreen(),
         'bottomNavy': (BuildContext context) => const BottomNavy(),
+        'userBottomNavy': (BuildContext context) => const UserBottomNavy(),
         'discover': (BuildContext context) => const DiscoverScreen(),
         'forgotPassword': (BuildContext context) => ForgotPasswordScreen(),
       },

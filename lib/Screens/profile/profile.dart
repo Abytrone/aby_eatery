@@ -1,5 +1,6 @@
 import 'package:aby_eatery/Screens/profile/settings.dart';
 import 'package:aby_eatery/components/empty_widget.dart';
+import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
@@ -14,7 +15,6 @@ import '../home/components/divider.dart';
 import '../home/product_detail.dart';
 import '../recipes/components/recipe_product_card.dart';
 import 'components/profile_info.dart';
-import 'components/social_info.dart';
 import 'components/social_item.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -29,9 +29,14 @@ class _ProfileScreenState extends State<ProfileScreen>
   final UserController userController = Get.find();
   final ProductsController productsController = Get.find();
   late TabController _tabController;
+  Account? user;
   @override
   void initState() {
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(
+        length: userController.user.value.value!.prefs.data['role'] == 'admin'
+            ? 2
+            : 1,
+        vsync: this);
     super.initState();
   }
 
@@ -75,8 +80,8 @@ class _ProfileScreenState extends State<ProfileScreen>
             children: [
               const SizedBox(height: 30),
               const PersonalInfo(),
-              const HorizontalDivider(),
-              const SocialInfo(),
+              // const HorizontalDivider(),
+              // const SocialInfo(),
               const HorizontalDivider(),
               TabBar(
                 controller: _tabController,
@@ -87,12 +92,14 @@ class _ProfileScreenState extends State<ProfileScreen>
                   borderSide: BorderSide(width: 4.0, color: kPrimaryColor),
                 ),
                 unselectedLabelStyle: const TextStyle(fontFamily: 'Okine'),
-                tabs: const [
-                  Text(
-                    'Recipes',
-                    style: TextStyle(fontSize: 17),
-                  ),
-                  Text(
+                tabs: [
+                  if (userController.user.value.value!.prefs.data['role'] ==
+                      'admin')
+                    const Text(
+                      'Recipes',
+                      style: TextStyle(fontSize: 17),
+                    ),
+                  const Text(
                     'About',
                     style: TextStyle(fontSize: 17),
                   ),
@@ -102,47 +109,52 @@ class _ProfileScreenState extends State<ProfileScreen>
                 child: TabBarView(
                   controller: _tabController,
                   children: [
-                    productsController.userProducts.value.value == null
-                        ? const Center(child: EmptyWidget())
-                        : RefreshIndicator(
-                            onRefresh: () {
-                              return productsController.getAuthUserProducts();
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 10, right: 5),
-                              child: MasonryGridView.count(
-                                padding: const EdgeInsets.all(0),
-                                crossAxisCount: 2,
-                                itemCount: productsController
-                                    .userProducts.value.value!.documents.length,
-                                crossAxisSpacing: 10,
-                                shrinkWrap: true,
-                                mainAxisSpacing: 0,
-                                itemBuilder: (context, index) {
-                                  final products = productsController
-                                      .userProducts
-                                      .value
-                                      .value!
-                                      .documents[index];
-                                  return InkWell(
-                                    onTap: () {
-                                      Get.to(
-                                        () => ProductDetailScreen(
-                                          product: products,
-                                        ),
-                                      );
-                                    },
-                                    child: RecipeProductCard(
-                                      id: products.$id,
-                                      title: products.data['name'],
-                                      productImage:
-                                          'https://$endPoint/storage/buckets/$productPicturesBucket/files/${products.data['images'][0]}/view?project=$projectId',
-                                    ),
-                                  );
-                                },
+                    // ignore: invalid_use_of_protected_member
+                    if (userController.user.value.value!.prefs.data['role'] ==
+                        'admin')
+                      productsController.userProducts.value.value == null
+                          ? const Center(child: EmptyWidget())
+                          : RefreshIndicator(
+                              onRefresh: () {
+                                return productsController.getAuthUserProducts();
+                              },
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 10, right: 5),
+                                child: MasonryGridView.count(
+                                  padding: const EdgeInsets.all(0),
+                                  crossAxisCount: 2,
+                                  itemCount: productsController.userProducts
+                                      .value.value!.documents.length,
+                                  crossAxisSpacing: 10,
+                                  shrinkWrap: true,
+                                  mainAxisSpacing: 0,
+                                  itemBuilder: (context, index) {
+                                    final products = productsController
+                                        .userProducts
+                                        .value
+                                        .value!
+                                        .documents[index];
+                                    return InkWell(
+                                      onTap: () {
+                                        Get.to(
+                                          () => ProductDetailScreen(
+                                            product: products,
+                                          ),
+                                        );
+                                      },
+                                      child: RecipeProductCard(
+                                        id: products.$id,
+                                        title: products.data['name'],
+                                        productImage:
+                                            'https://$endPoint/storage/buckets/$productPicturesBucket/files/${products.data['images'][0]}/view?project=$projectId',
+                                      ),
+                                    );
+                                  },
+                                ),
                               ),
                             ),
-                          ),
+
                     SingleChildScrollView(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -158,8 +170,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                           ),
                           const SizedBox(height: 10),
                           Text(
-                            // ignore: invalid_use_of_protected_member
-                            userController.user.value['description'],
+                            userController.user.value.value!.prefs
+                                    .data['description'] ??
+                                'null',
                           ),
                           const HorizontalDivider(),
                           Text(
@@ -208,37 +221,31 @@ class _ProfileScreenState extends State<ProfileScreen>
                           ),
                           PersonalInfoItem(
                             icon: 'assets/icons/call.svg',
-                            // ignore: invalid_use_of_protected_member
-                            text: userController.user.value['phone'],
+                            text: userController.user.value.value!.phone,
                           ),
                           PersonalInfoItem(
                             icon: 'assets/icons/location.svg',
                             text: userController
-                                .user
-                                // ignore: invalid_use_of_protected_member
-                                .value['prefs']
-                                .data['address'],
+                                    .user.value.value!.prefs.data['address'] ??
+                                'null',
                           ),
-                          PersonalInfoItem(
-                            icon: 'assets/icons/global.svg',
-                            text: userController
-                                .user
-                                // ignore: invalid_use_of_protected_member
-                                .value['prefs']
-                                .data['website'],
-                          ),
+                          // PersonalInfoItem(
+                          //   icon: 'assets/icons/global.svg',
+                          //   text: userController
+                          //           .user.value.value!.prefs.data['website'] ??
+                          //       'null',
+                          // ),
                           PersonalInfoItem(
                             icon: 'assets/icons/calender_tick.svg',
                             text:
-                                // ignore: invalid_use_of_protected_member
-                                'Joined since ${userController.user.value['createdAt'].substring(0, 4)}',
+                                'Joined since ${userController.user.value.value!.$createdAt.substring(0, 4)}',
                           ),
-                          PersonalInfoItem(
-                            icon: 'assets/icons/chart.svg',
-                            text:
-                                // ignore: invalid_use_of_protected_member
-                                '${userController.user.value['prefs'].data['views']} views',
-                          ),
+                          // PersonalInfoItem(
+                          //   icon: 'assets/icons/chart.svg',
+                          //   text:
+                          //       // ignore: invalid_use_of_protected_member
+                          //       '${userController.user.value.value!.prefs.data['views']} views',
+                          // ),
                         ],
                       ),
                     ),

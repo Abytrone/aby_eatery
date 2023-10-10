@@ -16,10 +16,14 @@ class AdsWidget extends StatelessWidget {
         child: CachedNetworkImage(
           imageUrl: image,
           fit: BoxFit.cover,
-          placeholder: (context, url) =>
-              Image.asset('assets/images/placeholder_landscape.png'),
-          errorWidget: (context, url, error) =>
-              Image.asset('assets/images/placeholder_landscape.png'),
+          placeholder: (context, url) => Image.asset(
+            'assets/images/placeholder_landscape.png',
+            fit: BoxFit.cover,
+          ),
+          errorWidget: (context, url, error) => Image.asset(
+            'assets/images/placeholder_landscape.png',
+            fit: BoxFit.cover,
+          ),
         ),
       ),
     );

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -60,41 +59,41 @@ class WelcomeScreen extends StatelessWidget {
                     child: Divider(
                         thickness: 0.5, color: Colors.white.withOpacity(0.5)),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: TextButton.icon(
-                      onPressed: () {
-                        Get.toNamed('home');
-                      },
-                      style: ButtonStyle(
-                        padding: MaterialStateProperty.all(
-                            const EdgeInsets.symmetric(
-                          horizontal: 70,
-                          vertical: 15,
-                        )),
-                        backgroundColor: MaterialStateProperty.all(kWhiteColor),
-                        foregroundColor: MaterialStateProperty.all(kDarkColor),
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(40.0),
-                          ),
-                        ),
-                      ),
-                      icon: SvgPicture.asset('assets/icons/google.svg'),
-                      label: Text(
-                        'Continue with Google',
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium!
-                            .copyWith(fontSize: 17),
-                      ),
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.symmetric(vertical: 10),
+                  //   child: TextButton.icon(
+                  //     onPressed: () {
+                  //       Get.toNamed('signup');
+                  //     },
+                  //     style: ButtonStyle(
+                  //       padding: MaterialStateProperty.all(
+                  //           const EdgeInsets.symmetric(
+                  //         horizontal: 70,
+                  //         vertical: 15,
+                  //       )),
+                  //       backgroundColor: MaterialStateProperty.all(kWhiteColor),
+                  //       foregroundColor: MaterialStateProperty.all(kDarkColor),
+                  //       shape: MaterialStateProperty.all(
+                  //         RoundedRectangleBorder(
+                  //           borderRadius: BorderRadius.circular(40.0),
+                  //         ),
+                  //       ),
+                  //     ),
+                  //     icon: SvgPicture.asset('assets/icons/google.svg'),
+                  //     label: Text(
+                  //       'Continue with Google',
+                  //       style: Theme.of(context)
+                  //           .textTheme
+                  //           .bodyMedium!
+                  //           .copyWith(fontSize: 17),
+                  //     ),
+                  //   ),
+                  // ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     child: TextButton(
                       onPressed: () {
-                        Get.toNamed('home');
+                        Get.toNamed('signup');
                       },
                       style: ButtonStyle(
                         padding: MaterialStateProperty.all(

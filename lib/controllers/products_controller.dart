@@ -15,15 +15,15 @@ import '../services/products_services.dart';
 class ProductsController extends GetxController {
   final ProductServices productServices = ProductServices();
 
-  @override
-  void onInit() {
-    getAllProducts();
-    getRecentProducts();
-    getAuthUserProducts();
-    getAuthUserDraftProducts();
-    getAuthUserPublishedProducts();
-    super.onInit();
-  }
+  // @override
+  // void onInit() {
+  //   getAllProducts();
+  //   getRecentProducts();
+  //   getAuthUserProducts();
+  //   getAuthUserDraftProducts();
+  //   getAuthUserPublishedProducts();
+  //   super.onInit();
+  // }
 
   var loadingDiets = false.obs;
   var diets = Rxn<Diets>().obs;
@@ -85,6 +85,7 @@ class ProductsController extends GetxController {
         return const LoadingDialog();
       },
     );
+    searchDiets.value.value = null;
     final result = await productServices.searchProducts(search: search);
     Diets? diet;
     if (result != null) {

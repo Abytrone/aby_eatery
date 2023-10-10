@@ -1,4 +1,4 @@
-package com.example.aby_eatery
+package com.dwindlr.aby_eatery
 
 import io.flutter.embedding.android.FlutterActivity
 

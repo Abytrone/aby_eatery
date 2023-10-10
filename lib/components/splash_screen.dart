@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../controllers/user_controller.dart';
 import '../services/auth_services.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -15,9 +17,10 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   bool _isLoggedIn = false;
-
+  final UserController userController = Get.find();
   @override
   void initState() {
+    userController.getUser();
     _checkIfLoggedIn();
     startTime();
     super.initState();
@@ -33,6 +36,13 @@ class _SplashScreenState extends State<SplashScreen> {
         _isLoggedIn = true;
       });
     }
+
+    // final userType = await userController.getUser();
+    // if (userType == null) {
+    //   setState(() {
+    //     user = userType;
+    //   });
+    // }
   }
 
   // / Setting duration in splash screen
@@ -42,8 +52,13 @@ class _SplashScreenState extends State<SplashScreen> {
 
   /// To navigate layout change
   void navigatorPage() {
-    Navigator.of(context)
-        .pushReplacementNamed(_isLoggedIn ? 'bottomNavy' : 'welcome');
+    Navigator.of(context).pushReplacementNamed(_isLoggedIn
+        ? userController.user.value.value == null
+            ? 'noInternet'
+            : userController.user.value.value!.prefs.data['role'] == 'admin'
+                ? 'bottomNavy'
+                : 'userBottomNavy'
+        : 'welcome');
   }
 
   @override
@@ -74,7 +89,7 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
               const SizedBox(height: 20),
               Text(
-                'Abyeatery',
+                'FB Nutrition',
                 style: GoogleFonts.quicksand(
                   fontSize: 40,
                   fontWeight: FontWeight.bold,
