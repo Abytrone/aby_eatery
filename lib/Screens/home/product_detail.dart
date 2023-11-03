@@ -15,7 +15,6 @@ import 'components/divider.dart';
 import 'components/ingredients_item.dart';
 import 'components/instruction_item.dart';
 import 'components/nutrition_item.dart';
-import 'components/product_card.dart';
 import 'components/title_text.dart';
 
 class ProductDetailScreen extends StatefulWidget {
@@ -133,6 +132,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   ),
                 ],
               ),
+              const SizedBox(height: 5),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
@@ -258,7 +258,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 repeat: true,
                               )
                             : commentController.comments.value.value == null
-                                ? const Center(child: EmptyWidget())
+                                ? const Center(
+                                    child: Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 20),
+                                      child: EmptyWidget(),
+                                    ),
+                                  )
                                 : ListView.builder(
                                     itemCount: commentController.comments.value
                                         .value!.comment.documents.length,
@@ -268,11 +274,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                     itemBuilder: (context, index) {
                                       final comment = commentController
                                           .comments.value.value!.comment;
-                                      final user = commentController
-                                          .comments.value.value!.user;
+                                      // final user = commentController
+                                      //     .comments.value.value!.user;
                                       return CommentItem(
                                         comment: comment.documents[index],
-                                        user: user.documents[0],
+                                        // user: user.documents[0],
                                       );
                                     },
                                   ),
@@ -286,40 +292,40 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 ],
               ),
 
-              const HorizontalDivider(),
-              // --------------------------------------------------------
+              // const HorizontalDivider(),
+              // // --------------------------------------------------------
 
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: TitleText(
-                        text: 'More Recipes Like This', showButton: true),
-                  ),
-                  SizedBox(
-                    height: 250,
-                    child: ListView.builder(
-                      itemCount: 5,
-                      scrollDirection: Axis.horizontal,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        return const Padding(
-                          padding: EdgeInsets.only(left: 10),
-                          child: ProductCard(
-                            username: 'Rayaan Yahaya',
-                            userImage:
-                                'https://cloud.appwrite.io/v1/storage/buckets/644ef4f24ccfdc5336f8/files/64bd357b3edd3e051892/view?project=646a7e8ad278150d5bd7&mode=admin',
-                            title: 'Original Wasawasa Recipe',
-                            productImage:
-                                'https://images.unsplash.com/photo-1482049016688-2d3e1b311543?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fGZvb2R8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60',
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              ),
+              // Column(
+              //   crossAxisAlignment: CrossAxisAlignment.start,
+              //   children: [
+              //     const Padding(
+              //       padding: EdgeInsets.symmetric(horizontal: 20),
+              //       child: TitleText(
+              //           text: 'More Recipes Like This', showButton: true),
+              //     ),
+              //     SizedBox(
+              //       height: 250,
+              //       child: ListView.builder(
+              //         itemCount: 5,
+              //         scrollDirection: Axis.horizontal,
+              //         shrinkWrap: true,
+              //         itemBuilder: (context, index) {
+              //           return const Padding(
+              //             padding: EdgeInsets.only(left: 10),
+              //             child: ProductCard(
+              //               username: 'Rayaan Yahaya',
+              //               userImage:
+              //                   'https://cloud.appwrite.io/v1/storage/buckets/644ef4f24ccfdc5336f8/files/64bd357b3edd3e051892/view?project=646a7e8ad278150d5bd7&mode=admin',
+              //               title: 'Original Wasawasa Recipe',
+              //               productImage:
+              //                   'https://images.unsplash.com/photo-1482049016688-2d3e1b311543?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fGZvb2R8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60',
+              //             ),
+              //           );
+              //         },
+              //       ),
+              //     ),
+              //   ],
+              // ),
             ],
           ),
           // Container(

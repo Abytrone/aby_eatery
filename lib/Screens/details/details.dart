@@ -86,12 +86,13 @@ class DetailsScreen extends StatelessWidget {
             ),
           ),
           Hero(
-              tag: item.id,
-              child: Image.asset(
-                item.image,
-                height: size.height * 0.4,
-                fit: BoxFit.fitHeight,
-              )),
+            tag: item.id,
+            child: Image.asset(
+              item.image,
+              height: size.height * 0.4,
+              fit: BoxFit.fitHeight,
+            ),
+          ),
         ],
       ),
     );

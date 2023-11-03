@@ -20,7 +20,7 @@ class _CreateRecipeScreenState extends State<CreateRecipeScreen> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   final TextEditingController name = TextEditingController();
-  final TextEditingController category = TextEditingController();
+  // final TextEditingController category = TextEditingController();
   final TextEditingController description = TextEditingController();
 
   final List<TextEditingController> nutritionController = [];
@@ -148,10 +148,10 @@ class _CreateRecipeScreenState extends State<CreateRecipeScreen> {
                 child: const Text('Publish'),
               ),
               const SizedBox(width: 10),
-              IconButton(
-                icon: const Icon(Iconsax.more),
-                onPressed: () {},
-              ),
+              // IconButton(
+              //   icon: const Icon(Iconsax.more),
+              //   onPressed: () {},
+              // ),
             ],
           ),
           body: ListView(
@@ -198,17 +198,17 @@ class _CreateRecipeScreenState extends State<CreateRecipeScreen> {
                         return null;
                       },
                     ),
-                    AbyInputField(
-                      controller: category,
-                      label: 'Category',
-                      hintText: 'Enter food category',
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return '* Required';
-                        }
-                        return null;
-                      },
-                    ),
+                    // AbyInputField(
+                    //   controller: category,
+                    //   label: 'Category',
+                    //   hintText: 'Enter food category',
+                    //   validator: (value) {
+                    //     if (value!.isEmpty) {
+                    //       return '* Required';
+                    //     }
+                    //     return null;
+                    //   },
+                    // ),
                     AbyInputField(
                       controller: description,
                       label: 'Description',

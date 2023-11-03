@@ -130,7 +130,12 @@ class AuthServices {
     }
   }
 
-  Future<bool> updateProfilePicture({required String path}) async {
+  Future<bool> updateProfilePicture({
+    required String address,
+    required String description,
+    required String role,
+    required String path,
+  }) async {
     try {
       final result = await storage.createFile(
         bucketId: profilePicturesBucket,
@@ -139,6 +144,9 @@ class AuthServices {
       );
 
       await account.updatePrefs(prefs: {
+        'address': address,
+        'description': description,
+        'role': role,
         "profilePicture": result.$id,
       });
       AbySnackBar.successSnackbar(

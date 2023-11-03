@@ -77,11 +77,12 @@ class _LoginScreenState extends State<LoginScreen> {
                           },
                         ),
                         const SizedBox(height: 20),
+
                         AuthInputField(
                           controller: password,
                           labelText: 'Password',
                           hintText: 'Enter your password',
-                          keyboardType: TextInputType.none,
+                          keyboardType: TextInputType.text,
                           obscureText: obsecure,
                           validator: (value) {
                             if (value!.isEmpty) {

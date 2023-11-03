@@ -60,7 +60,7 @@ class _SettingScreenState extends State<SettingScreen> {
             ),
             const SettingsItem(
               icon: 'assets/icons/info_circle_gradient.svg',
-              text: 'About Abyeatery',
+              text: 'About FB Nutrition',
               color: Colors.indigo,
             ),
             SettingsItem(

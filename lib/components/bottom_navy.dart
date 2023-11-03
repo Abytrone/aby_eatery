@@ -173,7 +173,7 @@ class _BottomNavyState extends State<BottomNavy> {
                     height: constraints.maxWidth < 768 ? 20 : 30,
                   ),
                 ),
-                label: 'My Recipes',
+                label: 'Recipes',
               ),
               BottomNavigationBarItem(
                 icon: Padding(

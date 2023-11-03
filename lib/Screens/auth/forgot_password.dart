@@ -9,6 +9,7 @@ import '../../constants.dart';
 class ForgotPasswordScreen extends StatelessWidget {
   ForgotPasswordScreen({Key? key}) : super(key: key);
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final TextEditingController email = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,8 +56,10 @@ class ForgotPasswordScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         AuthInputField(
+                          controller: email,
                           labelText: 'Email',
                           hintText: 'Enter your email',
+                          keyboardType: TextInputType.emailAddress,
                           validator: (email) {
                             String pattern =
                                 r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"

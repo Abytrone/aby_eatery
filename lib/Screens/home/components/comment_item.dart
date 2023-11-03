@@ -1,5 +1,7 @@
+import 'package:aby_eatery/controllers/user_controller.dart';
 import 'package:appwrite/models.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 
@@ -10,13 +12,14 @@ class CommentItem extends StatelessWidget {
   const CommentItem({
     Key? key,
     required this.comment,
-    required this.user,
+    // required this.user,
   }) : super(key: key);
   final Document comment;
-  final Document user;
+  // final Document user;
 
   @override
   Widget build(BuildContext context) {
+    final UserController userController = Get.find();
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
       child: SizedBox(
@@ -33,21 +36,26 @@ class CommentItem extends StatelessWidget {
                       width: 45,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(60),
-                        child: FadeInImage.assetNetwork(
-                          placeholder:
-                              'assets/images/placeholder_landscape.png',
-                          image:
-                              'https://$endPoint/storage/buckets/$profilePicturesBucket/files/${user.data['image']}/view?project=$projectId',
-                          // ignore: invalid_use_of_protected_member
-                          // 'http://$endPoint/storage/buckets/$profilePicturesBucket/files/${userController.user.value['image']}/view?project=$projectId',
-                          fit: BoxFit.cover,
-                          placeholderFit: BoxFit.cover,
-                        ),
+                        child: userController.user.value.value!.prefs
+                                    .data['profilePicture'] !=
+                                ' '
+                            ? FadeInImage.assetNetwork(
+                                placeholder:
+                                    'assets/images/placeholder_landscape.png',
+                                image:
+                                    'https://$endPoint/storage/buckets/$profilePicturesBucket/files/${userController.user.value.value!.prefs.data['profilePicture']}/view?project=$projectId',
+                                fit: BoxFit.cover,
+                                placeholderFit: BoxFit.cover,
+                              )
+                            : Image.asset(
+                                'assets/images/placeholder_landscape.png',
+                                fit: BoxFit.cover,
+                              ),
                       ),
                     ),
                     const SizedBox(width: 20),
                     Text(
-                      user.data['name'],
+                      userController.user.value.value!.name,
                       style: Theme.of(context).textTheme.bodySmall!.copyWith(
                             fontSize: 17,
                             fontWeight: FontWeight.bold,

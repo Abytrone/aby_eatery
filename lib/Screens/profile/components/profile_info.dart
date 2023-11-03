@@ -19,73 +19,76 @@ class PersonalInfo extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Row(
-          children: [
-            SizedBox(
-              height: 80,
-              width: 80,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(60),
-                child: userController
-                            .user.value.value!.prefs.data['profilePicture'] !=
-                        null
-                    ? FadeInImage.assetNetwork(
-                        placeholder: 'assets/images/placeholder_landscape.png',
-                        image:
-                            'https://$endPoint/storage/buckets/$profilePicturesBucket/files/${userController.user.value.value!.prefs.data['profilePicture']}/view?project=$projectId',
-                        fit: BoxFit.cover,
-                        placeholderFit: BoxFit.cover,
-                      )
-                    : Image.asset(
-                        'assets/images/placeholder_landscape.png',
-                        fit: BoxFit.cover,
-                      ),
+        Obx(
+          () => Row(
+            children: [
+              SizedBox(
+                height: 80,
+                width: 80,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(60),
+                  child: userController
+                              .user.value.value!.prefs.data['profilePicture'] !=
+                          ' '
+                      ? FadeInImage.assetNetwork(
+                          placeholder:
+                              'assets/images/placeholder_landscape.png',
+                          image:
+                              'https://$endPoint/storage/buckets/$profilePicturesBucket/files/${userController.user.value.value!.prefs.data['profilePicture']}/view?project=$projectId',
+                          fit: BoxFit.cover,
+                          placeholderFit: BoxFit.cover,
+                        )
+                      : Image.asset(
+                          'assets/images/placeholder_landscape.png',
+                          fit: BoxFit.cover,
+                        ),
+                ),
               ),
-            ),
-            const SizedBox(width: 10),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  userController.user.value.value!.name,
-                  style: const TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Row(
-                  children: [
-                    Text(
-                      userController.user.value.value!.email,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: kDarkColor.withOpacity(.5),
-                      ),
+              const SizedBox(width: 10),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    userController.user.value.value!.name,
+                    style: const TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
                     ),
-                    // Visibility(
-                    //   visible:
-                    //       userController.user.value.value!.emailVerification ==
-                    //           false,
-                    //   child: Container(
-                    //     padding: const EdgeInsets.symmetric(
-                    //         horizontal: 10, vertical: 2),
-                    //     decoration: BoxDecoration(
-                    //       color: kErrorColor.withOpacity(0.1),
-                    //       borderRadius: BorderRadius.circular(5),
-                    //     ),
-                    //     child: const Center(
-                    //       child: Text(
-                    //         'unverified',
-                    //         style: TextStyle(color: kErrorColor),
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
-                  ],
-                ),
-              ],
-            ),
-          ],
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        userController.user.value.value!.email,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: kDarkColor.withOpacity(.5),
+                        ),
+                      ),
+                      // Visibility(
+                      //   visible:
+                      //       userController.user.value.value!.emailVerification ==
+                      //           false,
+                      //   child: Container(
+                      //     padding: const EdgeInsets.symmetric(
+                      //         horizontal: 10, vertical: 2),
+                      //     decoration: BoxDecoration(
+                      //       color: kErrorColor.withOpacity(0.1),
+                      //       borderRadius: BorderRadius.circular(5),
+                      //     ),
+                      //     child: const Center(
+                      //       child: Text(
+                      //         'unverified',
+                      //         style: TextStyle(color: kErrorColor),
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
         TextButton(
           onPressed: () {

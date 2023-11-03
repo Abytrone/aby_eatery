@@ -31,33 +31,37 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             Center(
               child: Stack(
                 children: [
-                  SizedBox(
-                    width: 170,
-                    height: 170,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(120),
-                      child: userController.image.value.value != null
-                          ? Image.file(
-                              userController.image.value.value!,
-                              fit: BoxFit.cover,
-                            )
-                          : userController.user.value.value == null
-                              ? Image.asset(
-                                  'assets/images/placeholder_landscape.png',
-                                  fit: BoxFit.cover,
-                                )
-                              : userController.user.value.value == null
-                                  ? Image.asset(
-                                      'assets/images/placeholder_landscape.png',
-                                      fit: BoxFit.cover,
-                                    )
-                                  : FadeInImage.assetNetwork(
-                                      placeholder:
-                                          'assets/images/placeholder_landscape.png',
-                                      image:
-                                          'https://$endPoint/storage/buckets/$profilePicturesBucket/files/${userController.user.value.value!.prefs.data['profilePicture']}/view?project=$projectId',
-                                      fit: BoxFit.cover,
-                                    ),
+                  Obx(
+                    () => SizedBox(
+                      width: 170,
+                      height: 170,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(120),
+                        child: userController.image.value.value != null
+                            ? Image.file(
+                                userController.image.value.value!,
+                                fit: BoxFit.cover,
+                              )
+                            : userController.user.value.value == null
+                                ? Image.asset(
+                                    'assets/images/placeholder_landscape.png',
+                                    fit: BoxFit.cover,
+                                  )
+                                : userController.user.value.value!.prefs
+                                            .data['profilePicture'] ==
+                                        ' '
+                                    ? Image.asset(
+                                        'assets/images/placeholder_landscape.png',
+                                        fit: BoxFit.cover,
+                                      )
+                                    : FadeInImage.assetNetwork(
+                                        placeholder:
+                                            'assets/images/placeholder_landscape.png',
+                                        image:
+                                            'https://$endPoint/storage/buckets/$profilePicturesBucket/files/${userController.user.value.value!.prefs.data['profilePicture']}/view?project=$projectId',
+                                        fit: BoxFit.cover,
+                                      ),
+                      ),
                     ),
                   ),
                   Positioned(

@@ -3,7 +3,6 @@ import 'package:aby_eatery/controllers/products_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
 
 import '../../components/app_bar.dart';
 import '../../services/constants.dart';
@@ -37,10 +36,10 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
         ),
         title: 'Search',
         actions: <Widget>[
-          IconButton(
-            icon: const Icon(Iconsax.more),
-            onPressed: () {},
-          ),
+          // IconButton(
+          //   icon: const Icon(Iconsax.more),
+          //   onPressed: () {},
+          // ),
         ],
       ),
       body: Padding(

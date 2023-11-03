@@ -12,24 +12,16 @@ import '../services/local_service.dart';
 class UserController extends GetxController {
   final AuthServices authServices = AuthServices();
   final Storage storage = Storage(AppwriteServer.client);
+
+  @override
+  void onInit() {
+    getUser();
+    super.onInit();
+  }
+
   var user = Rxn<model.Account>().obs;
   Future<model.Account?> getUser() async {
     final result = await authServices.getUser();
-    // final authUser = await authServices.getAuthUser();
-    // user.value = {
-    //   'name': result.name,
-    //   'email': result.email,
-    //   'emailVerification': result.emailVerification,
-    //   'passwordUpdate': result.passwordUpdate,
-    //   'phone': result.phone,
-    //   'phoneVerification': result.phoneVerification,
-    //   'prefs': result.prefs,
-    //   'registration': result.registration,
-    //   'status': result.status,
-    //   'createdAt': result.$createdAt,
-    //   'id': result.$id,
-    //   'updatedAt': result.$updatedAt
-    // };
     user.value.value = result;
     return result;
   }
@@ -64,8 +56,14 @@ class UserController extends GetxController {
   }
 
   Future<bool> profilePicture({required String picPath}) async {
-    final response = await authServices.updateProfilePicture(path: picPath);
+    final response = await authServices.updateProfilePicture(
+      address: user.value.value!.prefs.data['address'],
+      description: user.value.value!.prefs.data['description'],
+      role: user.value.value!.prefs.data['role'],
+      path: picPath,
+    );
     if (response == true) {
+      getUser();
       return true;
     } else {
       return false;

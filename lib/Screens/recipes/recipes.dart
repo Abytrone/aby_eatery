@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:iconsax/iconsax.dart';
 
 import '../../constants.dart';
 import '../../services/constants.dart';
@@ -52,10 +51,10 @@ class _MyRecipesState extends State<MyRecipes> with TickerProviderStateMixin {
           onPressed: () {},
         ),
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Iconsax.more),
-          )
+          // IconButton(
+          //   onPressed: () {},
+          //   icon: const Icon(Iconsax.more),
+          // )
         ],
       ),
       body: Padding(
@@ -73,15 +72,15 @@ class _MyRecipesState extends State<MyRecipes> with TickerProviderStateMixin {
               unselectedLabelStyle: const TextStyle(fontFamily: 'Okine'),
               tabs: [
                 Text(
-                  draftProducts != null
-                      ? 'Draft (${draftProducts.total})'
-                      : 'Draft',
-                  style: const TextStyle(fontSize: 17),
-                ),
-                Text(
                   publishedProducts != null
                       ? 'Publish (${publishedProducts.total})'
                       : 'Published',
+                  style: const TextStyle(fontSize: 17),
+                ),
+                Text(
+                  draftProducts != null
+                      ? 'Draft (${draftProducts.total})'
+                      : 'Draft',
                   style: const TextStyle(fontSize: 17),
                 ),
               ],
@@ -90,43 +89,6 @@ class _MyRecipesState extends State<MyRecipes> with TickerProviderStateMixin {
               child: TabBarView(
                 controller: _tabController,
                 children: [
-                  draftProducts == null
-                      ? const Center(
-                          child: EmptyWidget(),
-                        )
-                      : draftProducts.documents.isEmpty
-                          ? const Center(
-                              child: EmptyWidget(),
-                            )
-                          : Padding(
-                              padding: const EdgeInsets.only(top: 10, right: 5),
-                              child: MasonryGridView.count(
-                                padding: const EdgeInsets.all(0),
-                                crossAxisCount: 2,
-                                itemCount: draftProducts.documents.length,
-                                crossAxisSpacing: 10,
-                                shrinkWrap: true,
-                                mainAxisSpacing: 0,
-                                itemBuilder: (context, index) {
-                                  return InkWell(
-                                    onTap: () {
-                                      Get.to(() => ProductDetailScreen(
-                                            product:
-                                                draftProducts.documents[index],
-                                          ));
-                                    },
-                                    child: RecipeProductCard(
-                                      id: draftProducts.documents[index].$id,
-                                      title: draftProducts
-                                          .documents[index].data['name'],
-                                      productImage:
-                                          'https://$endPoint/storage/buckets/$productPicturesBucket/files/${draftProducts.documents[index].data['images'][0]}/view?project=$projectId',
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                  // ------------------------TAB------------------------------
                   publishedProducts == null
                       ? const Center(
                           child: EmptyWidget(),
@@ -160,6 +122,44 @@ class _MyRecipesState extends State<MyRecipes> with TickerProviderStateMixin {
                                       productImage:
                                           'https://$endPoint/storage/buckets/$productPicturesBucket/files/${publishedProducts.documents[index].data['images'][0]}/view?project=$projectId',
                                       // 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Zm9vZHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60',
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                  // ------------------------TAB------------------------------
+
+                  draftProducts == null
+                      ? const Center(
+                          child: EmptyWidget(),
+                        )
+                      : draftProducts.documents.isEmpty
+                          ? const Center(
+                              child: EmptyWidget(),
+                            )
+                          : Padding(
+                              padding: const EdgeInsets.only(top: 10, right: 5),
+                              child: MasonryGridView.count(
+                                padding: const EdgeInsets.all(0),
+                                crossAxisCount: 2,
+                                itemCount: draftProducts.documents.length,
+                                crossAxisSpacing: 10,
+                                shrinkWrap: true,
+                                mainAxisSpacing: 0,
+                                itemBuilder: (context, index) {
+                                  return InkWell(
+                                    onTap: () {
+                                      Get.to(() => ProductDetailScreen(
+                                            product:
+                                                draftProducts.documents[index],
+                                          ));
+                                    },
+                                    child: RecipeProductCard(
+                                      id: draftProducts.documents[index].$id,
+                                      title: draftProducts
+                                          .documents[index].data['name'],
+                                      productImage:
+                                          'https://$endPoint/storage/buckets/$productPicturesBucket/files/${draftProducts.documents[index].data['images'][0]}/view?project=$projectId',
                                     ),
                                   );
                                 },

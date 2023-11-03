@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-
-import '../../../constants.dart';
 
 class ProductCard extends StatelessWidget {
   const ProductCard({
@@ -18,6 +15,7 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // final UserController userController = Get.find();
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: SizedBox(
@@ -71,53 +69,58 @@ class ProductCard extends StatelessWidget {
                         ),
                   ),
                   const SizedBox(height: 15),
-                  Row(
-                    children: [
-                      SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: FadeInImage.assetNetwork(
-                            placeholder:
-                                'assets/images/placeholder_landscape.png',
-                            image: userImage,
-                            // ignore: invalid_use_of_protected_member
-                            // 'http://$endPoint/storage/buckets/$profilePicturesBucket/files/${userController.user.value['image']}/view?project=$projectId',
-                            fit: BoxFit.cover,
-                            placeholderFit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      Text(
-                        username,
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                              color: Colors.white,
-                            ),
-                      ),
-                    ],
-                  ),
+                  // Row(
+                  //   children: [
+                  //     SizedBox(
+                  //       height: 20,
+                  //       width: 20,
+                  //       child: ClipRRect(
+                  //         borderRadius: BorderRadius.circular(20),
+                  //         child: userController.user.value.value!.prefs
+                  //                     .data['profilePicture'] ==
+                  //                 ' '
+                  //             ? Image.asset(
+                  //                 'assets/images/placeholder_landscape.png',
+                  //                 fit: BoxFit.cover,
+                  //               )
+                  //             : FadeInImage.assetNetwork(
+                  //                 placeholder:
+                  //                     'assets/images/placeholder_landscape.png',
+                  //                 image:
+                  //                     'https://$endPoint/storage/buckets/$profilePicturesBucket/files/${userController.user.value.value!.prefs.data['profilePicture']}/view?project=$projectId',
+                  //                 fit: BoxFit.cover,
+                  //               ),
+                  //       ),
+                  //     ),
+                  //     const SizedBox(width: 10),
+                  //     Text(
+                  //       username,
+                  //       style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                  //             color: Colors.white,
+                  //           ),
+                  //     ),
+                  //   ],
+                  // ),
                 ],
               ),
             ),
-            Positioned(
-              top: 5,
-              right: 5,
-              child: IconButton(
-                icon: SvgPicture.asset(
-                  'assets/icons/heart.svg',
-                  colorFilter: const ColorFilter.mode(
-                    Colors.white,
-                    BlendMode.srcIn,
-                  ),
-                ),
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(kPrimaryColor),
-                ),
-                onPressed: () {},
-              ),
-            ),
+            // Positioned(
+            //   top: 5,
+            //   right: 5,
+            //   child: IconButton(
+            //     icon: SvgPicture.asset(
+            //       'assets/icons/heart.svg',
+            //       colorFilter: const ColorFilter.mode(
+            //         Colors.white,
+            //         BlendMode.srcIn,
+            //       ),
+            //     ),
+            //     style: ButtonStyle(
+            //       backgroundColor: MaterialStateProperty.all(kPrimaryColor),
+            //     ),
+            //     onPressed: () {},
+            //   ),
+            // ),
           ],
         ),
       ),

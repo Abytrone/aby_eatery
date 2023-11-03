@@ -30,7 +30,14 @@ class IngredientItem extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 10),
-          Text(text),
+          SizedBox(
+            width: MediaQuery.of(context).size.width - 80,
+            child: Text(
+              text,
+              softWrap: true,
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(),
+            ),
+          ),
         ],
       ),
     );

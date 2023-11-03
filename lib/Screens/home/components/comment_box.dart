@@ -1,9 +1,11 @@
 import 'package:aby_eatery/controllers/comments_controller.dart';
+import 'package:aby_eatery/controllers/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 import '../../../constants.dart';
+import '../../../services/constants.dart';
 
 class CommentBox extends StatelessWidget {
   const CommentBox({Key? key, required this.dietId}) : super(key: key);
@@ -13,21 +15,28 @@ class CommentBox extends StatelessWidget {
   Widget build(BuildContext context) {
     final TextEditingController comment = TextEditingController();
     final CommentController commentController = Get.find();
+    final UserController userController = Get.find();
     return Row(
       children: [
         SizedBox(
           height: 45,
           width: 45,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(60),
-            child: FadeInImage.assetNetwork(
-              placeholder: 'assets/images/placeholder_landscape.png',
-              image:
-                  'https://cloud.appwrite.io/v1/storage/buckets/644ef4f24ccfdc5336f8/files/64bd357b3edd3e051892/view?project=646a7e8ad278150d5bd7&mode=admin',
-              // ignore: invalid_use_of_protected_member
-              // 'http://$endPoint/storage/buckets/$profilePicturesBucket/files/${userController.user.value['image']}/view?project=$projectId',
-              fit: BoxFit.cover,
-              placeholderFit: BoxFit.cover,
+          child: Obx(
+            () => ClipRRect(
+              borderRadius: BorderRadius.circular(60),
+              child: userController
+                          .user.value.value!.prefs.data['profilePicture'] ==
+                      ' '
+                  ? Image.asset(
+                      'assets/images/placeholder_landscape.png',
+                      fit: BoxFit.cover,
+                    )
+                  : FadeInImage.assetNetwork(
+                      placeholder: 'assets/images/placeholder_landscape.png',
+                      image:
+                          'https://$endPoint/storage/buckets/$profilePicturesBucket/files/${userController.user.value.value!.prefs.data['profilePicture']}/view?project=$projectId',
+                      fit: BoxFit.cover,
+                    ),
             ),
           ),
         ),

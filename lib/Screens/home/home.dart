@@ -66,16 +66,16 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             onPressed: () {},
           ),
-          IconButton(
-            icon: SvgPicture.asset(
-              'assets/icons/heart.svg',
-              colorFilter: const ColorFilter.mode(
-                kDarkColor,
-                BlendMode.srcIn,
-              ),
-            ),
-            onPressed: () {},
-          ),
+          // IconButton(
+          //   icon: SvgPicture.asset(
+          //     'assets/icons/heart.svg',
+          //     colorFilter: const ColorFilter.mode(
+          //       kDarkColor,
+          //       BlendMode.srcIn,
+          //     ),
+          //   ),
+          //   onPressed: () {},
+          // ),
         ],
       ),
       body: RefreshIndicator(

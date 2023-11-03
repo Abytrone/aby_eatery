@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../Models/diets_model.dart';
-import '../components/bottom_navy.dart';
 import '../components/loading_dialog.dart';
 import '../constants.dart';
 import '../services/products_services.dart';
@@ -206,7 +205,6 @@ class ProductsController extends GetxController {
             ingredients: ingredients,
             instructions: instructions,
             status: status,
-            // categoryId: categoryId,
             createdAt: createdAt,
           );
           if (result == true) {
@@ -215,8 +213,11 @@ class ProductsController extends GetxController {
             getAuthUserProducts();
             getAuthUserPublishedProducts();
             getRecentProducts();
+            images.clear();
             Navigator.of(Get.context!).pop();
-            Get.off(() => const BottomNavy(page: 2));
+            Get.back();
+            Get.back();
+            // Get.off(() => const BottomNavy(page: 2));
             return true;
           } else {
             for (var i = 0; i < imagesID.length; i++) {
