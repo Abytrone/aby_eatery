@@ -23,15 +23,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final ProductsController productsController = Get.find();
   // late TabController _tabController;
   Account? user;
-  // @override
-  // void initState() {
-  //   _tabController = TabController(
-  //       length: userController.user.value.value!.prefs.data['role'] == 'admin'
-  //           ? 2
-  //           : 1,
-  //       vsync: this);
-  //   super.initState();
-  // }
+  @override
+  void initState() {
+    userController.getUser();
+    //   _tabController = TabController(
+    //       length: userController.user.value.value!.prefs.data['role'] == 'admin'
+    //           ? 2
+    //           : 1,
+    //       vsync: this);
+    super.initState();
+  }
 
   // @override
   // void dispose() {
@@ -89,7 +90,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Text(
                     userController
                             .user.value.value!.prefs.data['description'] ??
-                        'null',
+                        '',
                   ),
                   const HorizontalDivider(),
                   Text(
@@ -130,10 +131,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           fontWeight: FontWeight.bold,
                         ),
                   ),
-                  PersonalInfoItem(
-                    icon: 'assets/icons/call.svg',
-                    text: userController.user.value.value!.phone,
-                  ),
+                  userController.user.value.value!.phone == ''
+                      ? const SizedBox.shrink()
+                      : PersonalInfoItem(
+                          icon: 'assets/icons/call.svg',
+                          text: userController.user.value.value!.phone,
+                        ),
                   PersonalInfoItem(
                     icon: 'assets/icons/location.svg',
                     text: userController

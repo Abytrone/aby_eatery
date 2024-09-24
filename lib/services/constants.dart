@@ -1,5 +1,7 @@
 const String endPoint = 'cloud.appwrite.io/v1';
 const String projectId = '646a7e8ad278150d5bd7';
+const String apiKey =
+    'standard_ddab720d476f547b5bf32102a2c69147f9f6b2abbab689556ee41280861b68f4c3aa8ae5232073bae9fe72ae6b23d55e1d9a437120dd4018763998b373c58642648692003caceb1246db0663b3ad17c51f72d2d8f21415896f34c1d1055f0703e40675ea7c853103798c6612eaf9f13ef8c5966cdb9208ed14184174a8392086';
 
 const String databaseId = '64bd1fbca45f40fdcdda';
 

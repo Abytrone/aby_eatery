@@ -36,14 +36,14 @@ class CommentItem extends StatelessWidget {
                       width: 45,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(60),
-                        child: userController.user.value.value!.prefs
-                                    .data['profilePicture'] !=
-                                ' '
+                        child: userController
+                                    .user.value.value!.prefs.data['profile'] !=
+                                null
                             ? FadeInImage.assetNetwork(
                                 placeholder:
                                     'assets/images/placeholder_landscape.png',
                                 image:
-                                    'https://$endPoint/storage/buckets/$profilePicturesBucket/files/${userController.user.value.value!.prefs.data['profilePicture']}/view?project=$projectId',
+                                    'https://$endPoint/storage/buckets/$profilePicturesBucket/files/${userController.user.value.value!.prefs.data['profile']}/view?project=$projectId&mode=admin',
                                 fit: BoxFit.cover,
                                 placeholderFit: BoxFit.cover,
                               )

@@ -41,8 +41,8 @@ class LogoutDialogBox {
             TextButton(
               style: ButtonStyle(
                 backgroundColor:
-                    MaterialStateProperty.all(kPrimaryColor.withOpacity(0.1)),
-                foregroundColor: MaterialStateProperty.all(kPrimaryColor),
+                    WidgetStateProperty.all(kPrimaryColor.withOpacity(0.1)),
+                foregroundColor: WidgetStateProperty.all(kPrimaryColor),
               ),
               child: const Text('Cancel'),
               onPressed: () {
@@ -51,9 +51,9 @@ class LogoutDialogBox {
             ),
             TextButton(
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(kPrimaryColor),
-                foregroundColor: MaterialStateProperty.all(Colors.white),
-                textStyle: MaterialStateProperty.all(
+                backgroundColor: WidgetStateProperty.all(kPrimaryColor),
+                foregroundColor: WidgetStateProperty.all(Colors.white),
+                textStyle: WidgetStateProperty.all(
                     const TextStyle(color: Colors.white)),
               ),
               child: const Text('Yes'),

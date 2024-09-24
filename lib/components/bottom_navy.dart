@@ -56,8 +56,8 @@ class _BottomNavyState extends State<BottomNavy> {
         },
         padding: const EdgeInsets.all(15),
         style: ButtonStyle(
-          backgroundColor: const MaterialStatePropertyAll(kPrimaryColor),
-          shape: MaterialStatePropertyAll(
+          backgroundColor: const WidgetStatePropertyAll(kPrimaryColor),
+          shape: WidgetStatePropertyAll(
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
           ),
         ),

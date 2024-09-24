@@ -52,13 +52,15 @@ class _SplashScreenState extends State<SplashScreen> {
 
   /// To navigate layout change
   void navigatorPage() {
-    Navigator.of(context).pushReplacementNamed(_isLoggedIn
-        ? userController.user.value.value == null
-            ? 'noInternet'
-            : userController.user.value.value!.prefs.data['role'] == 'admin'
-                ? 'bottomNavy'
-                : 'userBottomNavy'
-        : 'welcome');
+    Navigator.of(context).pushReplacementNamed(
+      _isLoggedIn
+          ? userController.user.value.value == null
+              ? 'noInternet'
+              : userController.user.value.value!.prefs.data['role'] == 'admin'
+                  ? 'bottomNavy'
+                  : 'userBottomNavy'
+          : 'welcome',
+    );
   }
 
   @override

@@ -1,3 +1,4 @@
+import 'package:aby_eatery/controllers/user_controller.dart';
 import 'package:aby_eatery/services/appwrite_server.dart';
 import 'package:aby_eatery/services/local_service.dart';
 import 'package:appwrite/appwrite.dart';
@@ -33,6 +34,25 @@ class AuthServices {
         const StatusDialog(),
         barrierDismissible: false,
       );
+
+      await account
+          .createEmailPasswordSession(
+        email: email,
+        password: password,
+      )
+          .then((session) async {
+        await account.updatePrefs(
+          prefs: {
+            'address': 'Address not added yet!',
+            'description': 'Description not added yet!',
+            'role': 'user',
+            'profile': '66f1723b00373d8c74c2',
+          },
+        ).then((user) {
+          account.deleteSession(sessionId: session.$id);
+        });
+      });
+
       Future.delayed(const Duration(seconds: 6), () {
         Get.offAllNamed('login');
       });
@@ -54,19 +74,28 @@ class AuthServices {
   }) async {
     try {
       loading(true);
-      final user = await account.createEmailSession(
+      final session = await account.createEmailPasswordSession(
         email: email,
         password: password,
       );
 
-      final SharedPreferences localStorage =
-          await SharedPreferences.getInstance();
-      localStorage.setString('sessionId', user.$id);
-      localStorage.setString('userId', user.userId);
-      Get.offAllNamed('bottomNavy');
+      final localStorage = await SharedPreferences.getInstance();
+      localStorage.setString('sessionId', session.$id);
+      localStorage.setString('userId', session.userId);
+
+      final prefs = await account.getPrefs();
+
+      getUser().then((_) {
+        if (prefs.data['role'] == 'admin') {
+          Get.offAllNamed('bottomNavy');
+        } else {
+          Get.offAllNamed('userBottomNavy');
+        }
+      });
+
       loading(false);
       AbySnackBar.successSnackbar(
-          text: 'You have successefully signed in ${user.clientName}.');
+          text: 'You have successefully signed in ${session.clientName}.');
 
       return true;
     } on AppwriteException catch (e) {
@@ -78,54 +107,42 @@ class AuthServices {
   }
 
   Future<dynamic> logout({required String sessionId}) async {
+    final UserController userController = Get.find();
     try {
-      final SharedPreferences localStorage =
-          await SharedPreferences.getInstance();
+      userController.user.value(null);
+      final localStorage = await SharedPreferences.getInstance();
       account.deleteSession(sessionId: sessionId);
       localStorage.remove('sessionId');
       localStorage.remove('userId');
-      Get.offAllNamed('welcome');
+      Get.offAllNamed('login');
       AbySnackBar.successSnackbar(text: 'You have successefully logged out.');
       return true;
     } on AppwriteException catch (e) {
-      AbySnackBar.errorSnackbar(text: 'Error Message (${e.message})');
+      AbySnackBar.errorSnackbar(text: 'Error Message: (${e.message})');
       return false;
     }
   }
 
-  Future<model.Account?> getUser() async {
+  Future<model.User?> getUser() async {
     try {
-      final currentUser = await account.get();
+      model.User? user;
       final prefs = await account.getPrefs();
       if (prefs.data.isEmpty) {
-        await account.updatePrefs(
+        user = await account.updatePrefs(
           prefs: {
             'address': 'Address not added yet!',
             'description': 'Description not added yet!',
             'role': 'user',
+            'profile': '66f1723b00373d8c74c2',
           },
         );
+      } else {
+        user = await account.get();
       }
-      return currentUser;
-    } on AppwriteException {
-      // print(e);
-      return null;
-    }
-  }
-
-  Future<model.DocumentList?> getAuthUser() async {
-    try {
-      final currentUser = await account.get();
-      final result = await databases.listDocuments(
-        databaseId: databaseId,
-        collectionId: usersCollectionId, // users
-        queries: [Query.search('userid', currentUser.$id)],
-      );
-      // print(result.documents[0].data['name']);
-      return result;
+      return user;
     } on AppwriteException catch (e) {
-      // print(e.message);
-      AbySnackBar.errorSnackbar(text: 'Error Message (${e.message})');
+      AbySnackBar.errorSnackbar(
+          text: e.message ?? 'Error occured please try again!');
       return null;
     }
   }
@@ -147,7 +164,7 @@ class AuthServices {
         'address': address,
         'description': description,
         'role': role,
-        "profilePicture": result.$id,
+        "profile": result.$id,
       });
       AbySnackBar.successSnackbar(
           text: 'Profile picture updated successfully!');

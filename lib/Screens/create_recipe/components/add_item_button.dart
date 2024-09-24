@@ -20,12 +20,12 @@ class AddItemButton extends StatelessWidget {
             child: TextButton(
               onPressed: onPressed,
               style: ButtonStyle(
-                padding: MaterialStateProperty.all(const EdgeInsets.symmetric(
+                padding: WidgetStateProperty.all(const EdgeInsets.symmetric(
                   horizontal: 10,
                   vertical: 17,
                 )),
-                backgroundColor: MaterialStateProperty.all(kSecondaryColor),
-                shape: MaterialStateProperty.all(
+                backgroundColor: WidgetStateProperty.all(kSecondaryColor),
+                shape: WidgetStateProperty.all(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(40.0),
                   ),

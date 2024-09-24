@@ -50,7 +50,7 @@ class _MyRecipesState extends State<MyRecipes> with TickerProviderStateMixin {
           icon: Image.asset('assets/app_icon/foreground.png'),
           onPressed: () {},
         ),
-        actions: [
+        actions: const [
           // IconButton(
           //   onPressed: () {},
           //   icon: const Icon(Iconsax.more),

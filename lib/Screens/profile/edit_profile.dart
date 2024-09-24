@@ -48,8 +48,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                     fit: BoxFit.cover,
                                   )
                                 : userController.user.value.value!.prefs
-                                            .data['profilePicture'] ==
-                                        ' '
+                                            .data['profile'] ==
+                                        null
                                     ? Image.asset(
                                         'assets/images/placeholder_landscape.png',
                                         fit: BoxFit.cover,
@@ -58,7 +58,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                         placeholder:
                                             'assets/images/placeholder_landscape.png',
                                         image:
-                                            'https://$endPoint/storage/buckets/$profilePicturesBucket/files/${userController.user.value.value!.prefs.data['profilePicture']}/view?project=$projectId',
+                                            'https://$endPoint/storage/buckets/$profilePicturesBucket/files/${userController.user.value.value!.prefs.data['profile']}/view?project=$projectId&mode=admin',
                                         fit: BoxFit.cover,
                                       ),
                       ),
@@ -73,46 +73,45 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       },
                       icon: const Icon(Iconsax.edit),
                       style: const ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll(Colors.white),
-                        foregroundColor:
-                            MaterialStatePropertyAll(kPrimaryColor),
+                        backgroundColor: WidgetStatePropertyAll(Colors.white),
+                        foregroundColor: WidgetStatePropertyAll(kPrimaryColor),
                       ),
                     ),
                   ),
                 ],
               ),
             ),
-            AbyInputField(
-              label: 'First Name',
-              hintText: 'First Name',
+            const AbyInputField(
+              label: 'Full Name',
+              hintText: 'Full Name',
               controller: null,
             ),
-            AbyInputField(
-              label: 'Last Name',
-              hintText: 'Last Name',
-              controller: null,
-            ),
-            AbyInputField(
-              label: 'Date of Birth',
-              hintText: 'Date of Birth',
-              controller: null,
-            ),
-            AbyInputField(
+            // const AbyInputField(
+            //   label: 'Last Name',
+            //   hintText: 'Last Name',
+            //   controller: null,
+            // ),
+            // const AbyInputField(
+            //   label: 'Date of Birth',
+            //   hintText: 'Date of Birth',
+            //   controller: null,
+            // ),
+            const AbyInputField(
               label: 'Email',
-              hintText: 'Email',
+              hintText: 'Enter email',
               controller: null,
             ),
-            AbyInputField(
+            const AbyInputField(
               label: 'Phone Number',
-              hintText: 'Phone Number',
+              hintText: 'Enter phone number',
               controller: null,
             ),
-            AbyInputField(
+            const AbyInputField(
               label: 'Address',
               hintText: 'Enter address',
               controller: null,
             ),
-            AbyInputField(
+            const AbyInputField(
               label: 'Description',
               hintText: 'Enter description',
               maxLines: 5,

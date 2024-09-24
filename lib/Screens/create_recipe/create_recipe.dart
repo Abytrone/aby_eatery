@@ -96,12 +96,12 @@ class _CreateRecipeScreenState extends State<CreateRecipeScreen> {
                   }
                 },
                 style: ButtonStyle(
-                  padding: const MaterialStatePropertyAll(
+                  padding: const WidgetStatePropertyAll(
                       EdgeInsets.symmetric(horizontal: 20)),
                   backgroundColor:
-                      const MaterialStatePropertyAll(kPrimaryColor),
-                  foregroundColor: const MaterialStatePropertyAll(Colors.white),
-                  shape: MaterialStateProperty.all(
+                      const WidgetStatePropertyAll(kPrimaryColor),
+                  foregroundColor: const WidgetStatePropertyAll(Colors.white),
+                  shape: WidgetStateProperty.all(
                     RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20.0),
                     ),
@@ -134,11 +134,11 @@ class _CreateRecipeScreenState extends State<CreateRecipeScreen> {
                   }
                 },
                 style: ButtonStyle(
-                  padding: const MaterialStatePropertyAll(
+                  padding: const WidgetStatePropertyAll(
                       EdgeInsets.symmetric(horizontal: 20)),
                   foregroundColor:
-                      const MaterialStatePropertyAll(kPrimaryColor),
-                  shape: MaterialStateProperty.all(
+                      const WidgetStatePropertyAll(kPrimaryColor),
+                  shape: WidgetStateProperty.all(
                     RoundedRectangleBorder(
                       side: const BorderSide(color: kPrimaryColor, width: 2),
                       borderRadius: BorderRadius.circular(20.0),

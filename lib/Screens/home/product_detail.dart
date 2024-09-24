@@ -1,7 +1,7 @@
 import 'package:aby_eatery/components/empty_widget.dart';
 import 'package:aby_eatery/controllers/comments_controller.dart';
 import 'package:appwrite/models.dart';
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:carousel_slider/carousel_slider.dart' as carousel;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
@@ -28,7 +28,7 @@ class ProductDetailScreen extends StatefulWidget {
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   int _current = 0;
-  final CarouselController _controller = CarouselController();
+  // final carousel.CarouselController _controller = carousel.CarouselController();
   final List<String> imgList = [];
   final CommentController commentController = Get.find();
 
@@ -54,7 +54,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             children: [
               Stack(
                 children: [
-                  CarouselSlider(
+                  carousel.CarouselSlider(
                     items: imgList
                         .map(
                           (item) => Stack(
@@ -87,8 +87,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           ),
                         )
                         .toList(),
-                    carouselController: _controller,
-                    options: CarouselOptions(
+                    // carouselController: _controller,
+                    options: carousel.CarouselOptions(
                         viewportFraction: 1,
                         disableCenter: true,
                         height: 350,
@@ -110,7 +110,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: imgList.asMap().entries.map((entry) {
                             return GestureDetector(
-                              onTap: () => _controller.animateToPage(entry.key),
+                              // onTap: () => _controller.animateToPage(entry.key),
                               child: Container(
                                 width: _current == entry.key ? 30 : 10.0,
                                 height: 10.0,

@@ -136,10 +136,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                         );
                                       },
                                       child: ProductCard(
-                                        username:
-                                            user!.documents[0].data['name'],
+                                        username: user!.name,
                                         userImage:
-                                            'https://$endPoint/storage/buckets/$profilePicturesBucket/files/${user.documents[0].data['image']}/view?project=$projectId',
+                                            'https://$endPoint/storage/buckets/$profilePicturesBucket/files/${user.prefs.data['profile']}/view?project=$projectId&mode=admin',
                                         title: product!
                                             .documents[index].data['name'],
                                         productImage:
@@ -178,9 +177,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                     );
                                   },
                                   child: ProductCard(
-                                    username: user!.documents[0].data['name'],
+                                    username: user!.name,
                                     userImage:
-                                        'https://$endPoint/storage/buckets/$profilePicturesBucket/files/${user.documents[0].data['image']}/view?project=$projectId',
+                                        'https://$endPoint/storage/buckets/$profilePicturesBucket/files/${user.prefs.data['profile']}/view?project=$projectId&mode=admin',
                                     title:
                                         products!.documents[index].data['name'],
                                     productImage:

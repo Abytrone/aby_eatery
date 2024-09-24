@@ -10,7 +10,6 @@ ThemeData lightThemeData(BuildContext context) {
     platform: TargetPlatform.iOS,
     primaryColor: kPrimaryColor,
     brightness: Brightness.light,
-    useMaterial3: true,
     // scaffoldBackgroundColor: kLightBackgroundColor,
     appBarTheme: const AppBarTheme(
       centerTitle: false,

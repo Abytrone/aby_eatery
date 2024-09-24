@@ -44,7 +44,7 @@ class SearchBox extends StatelessWidget {
             },
             iconSize: 30,
             style: const ButtonStyle(
-              backgroundColor: MaterialStatePropertyAll(kPrimaryColor),
+              backgroundColor: WidgetStatePropertyAll(kPrimaryColor),
             ),
             icon: SvgPicture.asset(
               'assets/icons/send.svg',

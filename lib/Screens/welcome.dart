@@ -96,14 +96,14 @@ class WelcomeScreen extends StatelessWidget {
                         Get.toNamed('signup');
                       },
                       style: ButtonStyle(
-                        padding: MaterialStateProperty.all(
+                        padding: WidgetStateProperty.all(
                             const EdgeInsets.symmetric(
                           horizontal: 130,
                           vertical: 17,
                         )),
                         backgroundColor:
-                            MaterialStateProperty.all(kPrimaryColor),
-                        shape: MaterialStateProperty.all(
+                            WidgetStateProperty.all(kPrimaryColor),
+                        shape: WidgetStateProperty.all(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(40.0),
                           ),
@@ -125,14 +125,14 @@ class WelcomeScreen extends StatelessWidget {
                         Get.toNamed('login');
                       },
                       style: ButtonStyle(
-                        padding: MaterialStateProperty.all(
+                        padding: WidgetStateProperty.all(
                             const EdgeInsets.symmetric(
                           horizontal: 75,
                           vertical: 17,
                         )),
                         backgroundColor:
-                            MaterialStateProperty.all(kSecondaryColor),
-                        shape: MaterialStateProperty.all(
+                            WidgetStateProperty.all(kSecondaryColor),
+                        shape: WidgetStateProperty.all(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(40.0),
                           ),

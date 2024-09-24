@@ -13,14 +13,14 @@ class UserController extends GetxController {
   final AuthServices authServices = AuthServices();
   final Storage storage = Storage(AppwriteServer.client);
 
-  @override
-  void onInit() {
-    getUser();
-    super.onInit();
-  }
+  // @override
+  // void onInit() {
+  //   // getUser();
+  //   super.onInit();
+  // }
 
-  var user = Rxn<model.Account>().obs;
-  Future<model.Account?> getUser() async {
+  var user = Rxn<model.User>().obs;
+  Future<model.User?> getUser() async {
     final result = await authServices.getUser();
     user.value.value = result;
     return result;

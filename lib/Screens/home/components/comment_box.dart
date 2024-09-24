@@ -24,9 +24,8 @@ class CommentBox extends StatelessWidget {
           child: Obx(
             () => ClipRRect(
               borderRadius: BorderRadius.circular(60),
-              child: userController
-                          .user.value.value!.prefs.data['profilePicture'] ==
-                      ' '
+              child: userController.user.value.value!.prefs.data['profile'] ==
+                      null
                   ? Image.asset(
                       'assets/images/placeholder_landscape.png',
                       fit: BoxFit.cover,
@@ -34,7 +33,7 @@ class CommentBox extends StatelessWidget {
                   : FadeInImage.assetNetwork(
                       placeholder: 'assets/images/placeholder_landscape.png',
                       image:
-                          'https://$endPoint/storage/buckets/$profilePicturesBucket/files/${userController.user.value.value!.prefs.data['profilePicture']}/view?project=$projectId',
+                          'https://$endPoint/storage/buckets/$profilePicturesBucket/files/${userController.user.value.value!.prefs.data['profile']}/view?project=$projectId&mode=admin',
                       fit: BoxFit.cover,
                     ),
             ),

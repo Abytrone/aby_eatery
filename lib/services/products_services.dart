@@ -1,11 +1,14 @@
 import 'package:aby_eatery/services/local_service.dart';
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart' as model;
+import 'package:dart_appwrite/dart_appwrite.dart' as dart;
+import 'package:dart_appwrite/models.dart';
 
 import 'appwrite_server.dart';
 import 'constants.dart';
 
 class ProductServices {
+  final AppwriteServer appwriteServer = AppwriteServer();
   final Account account = Account(AppwriteServer.client);
   final Storage storage = Storage(AppwriteServer.client);
   final Databases databases = Databases(AppwriteServer.client);
@@ -34,14 +37,12 @@ class ProductServices {
     }
   }
 
-  Future<model.DocumentList?> getProductOwner({required String userId}) async {
+  final dart.Users user = dart.Users(AppwriteServer.apiClient);
+
+  Future<User?> getProductOwner({required String userId}) async {
     try {
-      final result = await databases.listDocuments(
-        databaseId: databaseId,
-        collectionId: usersCollectionId, // users
-        queries: [Query.search('userid', userId)],
-      );
-      // print(result.documents[0].data['name']);
+      final result = await user.get(userId: userId);
+
       return result;
     } on AppwriteException catch (e) {
       // print(e.message);
@@ -57,7 +58,6 @@ class ProductServices {
         collectionId: dietsCollectionId, // diets
         queries: [Query.equal('status', '1')],
       );
-      // print(result.documents);
       return result;
     } on AppwriteException catch (e) {
       // print(e.message);

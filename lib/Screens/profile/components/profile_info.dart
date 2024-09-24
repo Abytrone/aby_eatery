@@ -10,9 +10,7 @@ import '../../../services/constants.dart';
 final UserController userController = Get.find();
 
 class PersonalInfo extends StatelessWidget {
-  const PersonalInfo({
-    super.key,
-  });
+  const PersonalInfo({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,21 +25,21 @@ class PersonalInfo extends StatelessWidget {
                 width: 80,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(60),
-                  child: userController
-                              .user.value.value!.prefs.data['profilePicture'] !=
-                          ' '
-                      ? FadeInImage.assetNetwork(
-                          placeholder:
+                  child:
+                      userController.user.value.value!.prefs.data['profile'] !=
+                              null
+                          ? FadeInImage.assetNetwork(
+                              placeholder:
+                                  'assets/images/placeholder_landscape.png',
+                              image:
+                                  'https://$endPoint/storage/buckets/$profilePicturesBucket/files/${userController.user.value.value!.prefs.data['profile']}/view?project=$projectId&mode=admin',
+                              fit: BoxFit.cover,
+                              placeholderFit: BoxFit.cover,
+                            )
+                          : Image.asset(
                               'assets/images/placeholder_landscape.png',
-                          image:
-                              'https://$endPoint/storage/buckets/$profilePicturesBucket/files/${userController.user.value.value!.prefs.data['profilePicture']}/view?project=$projectId',
-                          fit: BoxFit.cover,
-                          placeholderFit: BoxFit.cover,
-                        )
-                      : Image.asset(
-                          'assets/images/placeholder_landscape.png',
-                          fit: BoxFit.cover,
-                        ),
+                              fit: BoxFit.cover,
+                            ),
                 ),
               ),
               const SizedBox(width: 10),
@@ -95,10 +93,10 @@ class PersonalInfo extends StatelessWidget {
             Get.to(() => const EditProfileScreen());
           },
           style: ButtonStyle(
-            padding: const MaterialStatePropertyAll(
+            padding: const WidgetStatePropertyAll(
                 EdgeInsets.symmetric(horizontal: 20)),
-            foregroundColor: const MaterialStatePropertyAll(kPrimaryColor),
-            shape: MaterialStateProperty.all(
+            foregroundColor: const WidgetStatePropertyAll(kPrimaryColor),
+            shape: WidgetStateProperty.all(
               RoundedRectangleBorder(
                 side: const BorderSide(color: kPrimaryColor, width: 2),
                 borderRadius: BorderRadius.circular(20.0),

@@ -86,10 +86,9 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                             );
                           },
                           child: ProductCard(
-                            username: searchedProducts!
-                                .user!.documents[0].data['name'],
+                            username: searchedProducts!.user!.name,
                             userImage:
-                                'https://$endPoint/storage/buckets/$profilePicturesBucket/files/${searchedProducts.user!.documents[0].data['image']}/view?project=$projectId',
+                                'https://$endPoint/storage/buckets/$profilePicturesBucket/files/${searchedProducts.user!.prefs.data['profile']}/view?project=$projectId',
                             title: searchedProducts
                                 .products!.documents[index].data['name'],
                             productImage:
